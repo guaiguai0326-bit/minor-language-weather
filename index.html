@@ -736,7 +736,7 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 <div class="section card"><h2>🗺️ 欧洲天气 × 中国体感地图</h2>
 <div class="realmap-wrap">
   <div id="chinaMap" class="realmap"><div class="china-map-loading">中国体感地图加载中…</div></div>
-  <div class="map-note">按当天温度、降雨、风感与昼夜温差映射中国相近体感区域，用于素材季节判断。</div>
+  <div class="map-note">按当天实时温度、降雨、风感与昼夜温差动态映射中国相近体感区域；天气变化后，国家标签与高亮区域会自动移动。</div>
 </div></div>
 <div class="section card"><h2>📊 9国完整对标表</h2><div class="tablewrap"><table class="tbl"><thead><tr><th>区域/国家</th><th>今日天气</th><th>🇨🇳 中国体感对标</th><th>🧥 穿衣/素材参考</th><th>📈 未来7天</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 <div class="section"><h2>☕ 当地生活行动 × 文化场景</h2><div class="detail" id="details"></div></div><div class="foot">天气数据：Open-Meteo；文化场景为设计参考，不代表所有当地居民。中国体感对标是用于视觉决策的近似类比。</div></div>
@@ -777,16 +777,18 @@ async function renderChinaMap(rows){
   el.innerHTML='';
   const chart=echarts.init(el);
 
-  const mapping={
-   '挪威':{provinces:['黑龙江省'],coord:[127.4,47.8],pos:'right'},
-   '瑞典':{provinces:['吉林省'],coord:[125.9,43.6],pos:'right'},
-   '芬兰':{provinces:['内蒙古自治区'],coord:[116.8,44.4],pos:'top'},
-   '德国':{provinces:['北京市','河北省','山西省'],coord:[114.7,39.0],pos:'top'},
-   '波兰':{provinces:['甘肃省','宁夏回族自治区','陕西省'],coord:[105.7,35.9],pos:'left'},
-   '荷兰':{provinces:['山东省','江苏省'],coord:[119.1,34.6],pos:'right'},
-   '法国':{provinces:['四川省','重庆市','贵州省'],coord:[104.7,29.2],pos:'left'},
-   '西班牙':{provinces:['湖北省','湖南省','江西省','安徽省'],coord:[113.9,29.0],pos:'bottom'},
-   '意大利':{provinces:['浙江省','福建省','广东省'],coord:[119.2,25.8],pos:'right'}
+  const climateMapTargets={
+   '内蒙古/新疆北部深秋':{provinces:['内蒙古自治区','黑龙江省'],coord:[119.5,47.2],pos:'top'},
+   '长春/太原标准深秋':{provinces:['吉林省','山西省'],coord:[119.0,40.7],pos:'right'},
+   '青岛/大连沿海初秋':{provinces:['辽宁省','山东省'],coord:[121.4,38.5],pos:'right'},
+   '北京/西安金秋':{provinces:['北京市','陕西省','河北省'],coord:[113.8,38.2],pos:'top'},
+   '成都/贵阳湿润秋季':{provinces:['四川省','贵州省'],coord:[104.8,29.2],pos:'left'},
+   '武汉/长沙舒适秋季':{provinces:['湖北省','湖南省'],coord:[112.8,29.8],pos:'right'},
+   '杭州/南京桂花季':{provinces:['浙江省','江苏省'],coord:[119.8,30.6],pos:'right'}
+  };
+  const countryOffset={
+   '德国':[-1.2,1.0],'法国':[-1.0,-0.8],'西班牙':[0.8,-0.9],'意大利':[1.2,-0.3],
+   '荷兰':[1.0,0.8],'挪威':[1.0,1.1],'瑞典':[0.8,-0.5],'芬兰':[-1.0,0.5],'波兰':[-0.8,-1.0]
   };
   const colors={
    '挪威':'#3979b8','瑞典':'#6f9fce','芬兰':'#91b4d9',
@@ -795,10 +797,13 @@ async function renderChinaMap(rows){
   };
   const regions=[],points=[];
   rows.forEach(x=>{
-   const m=mapping[x.c]; if(!m)return;
+   // x.cn is recalculated from today's live temperature/rain/wind data.
+   // The map target now follows that result instead of a fixed country position.
+   const m=climateMapTargets[x.cn]; if(!m)return;
    m.provinces.forEach(name=>regions.push({name,itemStyle:{areaColor:colors[x.c]}}));
+   const off=countryOffset[x.c]||[0,0];
    points.push({
-    name:x.c,value:[m.coord[0],m.coord[1],1],country:x,label:{position:m.pos},
+    name:x.c,value:[m.coord[0]+off[0],m.coord[1]+off[1],1],country:x,label:{position:m.pos},
     itemStyle:{color:colors[x.c]}
    });
   });
