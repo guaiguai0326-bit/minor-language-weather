@@ -493,6 +493,10 @@
   height:100%;min-height:520px;display:flex;align-items:center;justify-content:center;
   color:#718096;font-size:14px
 }
+
+/* V5.6 室外+室内双视角：两者同时保留 */
+.outdoor-action-v56,.indoor-action-v55{display:block!important;margin:10px 0!important;line-height:1.7!important}
+.outdoor-action-v56 b,.indoor-action-v55 b{font-weight:800!important;color:#243b63!important}
 </style><script>
 const cultureMedia={
  '德国':{map:'https://commons.wikimedia.org/wiki/Special:FilePath/Germany%20location%20map.svg',
@@ -593,7 +597,142 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 
 
 </script><script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
-</head><body><div class="wrap"><div class="top"><div class="title"><h1>🌍 小语种市场天气看板</h1><p>天气事实 → 中国体感 → 当地生活行动 → 素材机会 → 未来7天</p></div><div class="pill" id="updated">正在更新天气…</div></div><div class="grid" id="overview"></div>
+
+<style id="v5-complete-top">
+.v5-panel{background:#fff;border:1px solid #dbe5f0;border-radius:18px;padding:14px;margin:0 0 14px;box-shadow:0 8px 24px rgba(31,45,72,.05)}
+.v5-panel h2{font-size:17px;margin:0 0 10px;color:#0b2345}
+.v5-clocks{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:9px}
+.v5-clock-card{height:126px;border:1px solid #dce6f1;border-radius:14px;background:#fbfdff;padding:8px 5px;text-align:center}
+.v5-clock-title{height:20px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:900;color:#0b2345}
+.v5flag{display:inline-block;width:20px;height:13px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(20,45,75,.14)}
+.v5flag.de{background:linear-gradient(#111 0 33.33%,#d00 33.33% 66.66%,#ffce00 66.66%)}
+.v5flag.fr{background:linear-gradient(90deg,#0055a4 0 33.33%,#fff 33.33% 66.66%,#ef4135 66.66%)}
+.v5flag.es{background:linear-gradient(#aa151b 0 25%,#f1bf00 25% 75%,#aa151b 75%)}
+.v5flag.it{background:linear-gradient(90deg,#009246 0 33.33%,#fff 33.33% 66.66%,#ce2b37 66.66%)}
+.v5flag.nl{background:linear-gradient(#ae1c28 0 33.33%,#fff 33.33% 66.66%,#21468b 66.66%)}
+.v5flag.no{background:linear-gradient(90deg,transparent 0 28%,#fff 28% 36%,#00205b 36% 45%,#fff 45% 53%,transparent 53%),linear-gradient(transparent 0 38%,#fff 38% 46%,#00205b 46% 57%,#fff 57% 65%,transparent 65%),#ba0c2f}
+.v5flag.se{background:linear-gradient(90deg,transparent 0 30%,#fecc00 30% 41%,transparent 41%),linear-gradient(transparent 0 42%,#fecc00 42% 58%,transparent 58%),#006aa7}
+.v5flag.fi{background:linear-gradient(90deg,transparent 0 28%,#003580 28% 42%,transparent 42%),linear-gradient(transparent 0 40%,#003580 40% 60%,transparent 60%),#fff}
+.v5flag.pl{background:linear-gradient(#fff 0 50%,#dc143c 50%)}
+.v5-clock{width:82px;height:82px;border:2px solid #d8e5f4;border-radius:50%;margin:6px auto 0;position:relative;background:#fff}
+.v5n{position:absolute;font-size:9px;font-style:normal;font-weight:800;color:#52677f;line-height:1}.v5n12{top:5px;left:50%;transform:translateX(-50%)}.v5n3{right:6px;top:50%;transform:translateY(-50%)}.v5n6{bottom:5px;left:50%;transform:translateX(-50%)}.v5n9{left:6px;top:50%;transform:translateY(-50%)}
+.v5hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:5px}.v5hour{height:15px;width:4px;background:#243d5a;margin-left:-2px}.v5minute{height:22px;width:2px;background:#4b6f93;margin-left:-1px}.v5second{height:27px;width:1px;background:#ef6b6b;margin-left:-.5px}.v5pin{position:absolute;width:8px;height:8px;border-radius:50%;background:#203a58;left:50%;top:50%;transform:translate(-50%,-50%)}
+.v5-cal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;align-items:start}
+.v5-cal-card{background:#fff;border:1px solid #dbe5f0;border-radius:14px;padding:8px 10px 9px;box-shadow:0 2px 8px rgba(38,70,110,.03)}
+.v5-cal-head{height:32px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #edf2f7;margin-bottom:4px}.v5-cal-head strong{font-size:15px;font-weight:950;color:#071d3d}.v5-month{font-size:11px;font-weight:800;color:#72849a}.v5-today{margin-left:auto;font-size:14px;font-weight:900;color:#0b2345;white-space:nowrap}
+.v5-week,.v5-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.v5-week{height:20px;margin-bottom:2px}.v5-week span{font-size:10px;font-weight:700;color:#77879b;text-align:center;line-height:20px}.v5-days{grid-auto-rows:33px}
+.v5day{height:33px;border-radius:6px;background:#f7f9fc;padding:3px 4px;position:relative;overflow:hidden}.v5day.empty{background:#fafbfd}.v5day.today{background:#edf5ff;outline:1px solid #77a8ef}.v5day b{font-size:12px;font-weight:850;line-height:14px}.v5day em{position:absolute;right:4px;top:3px;font-size:12px;line-height:14px;font-style:normal}.v5holiday{position:absolute;left:4px;right:2px;bottom:2px;font-size:8px;line-height:9px;font-weight:900;color:#e2465b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:1100px){.v5-clocks{grid-template-columns:repeat(5,1fr)}.v5-cal-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:720px){.v5-clocks{grid-template-columns:repeat(3,1fr)}.v5-cal-grid{grid-template-columns:1fr}}
+</style>
+
+
+<style id="v5-1-adjustments">
+.v5-hidden-overview{display:none!important}
+.v5-season{font-size:11px;font-weight:850;color:#64748b;white-space:nowrap}
+.v5-cal-head{gap:7px}
+.v5-today{margin-left:auto}
+.indoor-action-v51{
+  margin-top:10px;padding:10px 12px;border-radius:10px;
+  background:#f6f9fd;border:1px solid #e3ebf5;color:#314968;
+  font-size:14px;line-height:1.65
+}
+.indoor-action-v51 b{color:#0b2345}
+.indoor-action-v51{border-left:3px solid #8eb5e8!important;background:linear-gradient(90deg,#f4f8fd,#fbfdff)!important}
+</style>
+
+
+<style id="v5-3-holiday-indoor-fix">
+.v5-day{position:relative;overflow:visible!important}
+.v5-holiday{
+ display:block; max-width:100%; margin-top:1px;
+ font-size:8px; line-height:9px; color:#e24b5b;
+ white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+ font-weight:600;
+}
+.v5-day.is-holiday{background:#fff8f8!important}
+
+/* 室内行动固定成一个明确模块，不再藏在长段文字里 */
+.indoor-action-v51{
+ display:block!important;
+ margin:10px 0 8px!important;
+ padding:10px 12px!important;
+ border:1px solid #dce8f6!important;
+ border-left:4px solid #78a8df!important;
+ border-radius:10px!important;
+ background:#f7faff!important;
+ line-height:1.7!important;
+ color:#334d70!important;
+}
+.indoor-action-v51 b{
+ display:inline!important;
+ color:#0b2345!important;
+ font-size:14px!important;
+}
+</style>
+
+
+<style id="v5-5-visible-fixes">
+.indoor-action-v55{font-size:16px!important;line-height:1.72!important;margin:7px 0!important;color:#526077!important}
+.indoor-action-v55 b{color:#172033!important}
+.v5holiday{z-index:3!important;background:rgba(255,255,255,.88);border-radius:3px;padding:0 1px}
+.v5day:has(.v5holiday){background:#fff6f7!important}
+</style>
+</head><body><div class="wrap"><div class="top"><div class="title"><h1>🌍 小语种市场天气看板</h1><p>天气事实 → 中国体感 → 当地生活行动 → 素材机会 → 未来7天</p></div><div class="pill" id="updated">正在更新天气…</div></div>
+<section class="v5-panel">
+<h2>🕘 9国当地时间｜模拟钟表实时走动</h2>
+<div class="v5-clocks"><div class="v5-clock-card" data-tz="Europe/Berlin"><div class="v5-clock-title"><b>德国</b><span class="v5flag de"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Paris"><div class="v5-clock-title"><b>法国</b><span class="v5flag fr"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Madrid"><div class="v5-clock-title"><b>西班牙</b><span class="v5flag es"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Rome"><div class="v5-clock-title"><b>意大利</b><span class="v5flag it"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Amsterdam"><div class="v5-clock-title"><b>荷兰</b><span class="v5flag nl"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Oslo"><div class="v5-clock-title"><b>挪威</b><span class="v5flag no"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Stockholm"><div class="v5-clock-title"><b>瑞典</b><span class="v5flag se"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Helsinki"><div class="v5-clock-title"><b>芬兰</b><span class="v5flag fi"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div><div class="v5-clock-card" data-tz="Europe/Warsaw"><div class="v5-clock-title"><b>波兰</b><span class="v5flag pl"></span></div>
+<div class="v5-clock"><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
+<span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div></div>
+</section>
+<section class="v5-panel">
+<h2>🌍 9国今日天气 × 自然月日历｜一屏总览</h2>
+<div class="v5-cal-grid"><div class="v5-cal-card" data-country="德国" data-code="DE" data-lat="52.52" data-lon="13.405" data-tz="Europe/Berlin">
+<div class="v5-cal-head"><strong>德国</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="法国" data-code="FR" data-lat="48.8566" data-lon="2.3522" data-tz="Europe/Paris">
+<div class="v5-cal-head"><strong>法国</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="西班牙" data-code="ES" data-lat="40.4168" data-lon="-3.7038" data-tz="Europe/Madrid">
+<div class="v5-cal-head"><strong>西班牙</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="意大利" data-code="IT" data-lat="41.9028" data-lon="12.4964" data-tz="Europe/Rome">
+<div class="v5-cal-head"><strong>意大利</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="荷兰" data-code="NL" data-lat="52.3676" data-lon="4.9041" data-tz="Europe/Amsterdam">
+<div class="v5-cal-head"><strong>荷兰</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="挪威" data-code="NO" data-lat="59.9139" data-lon="10.7522" data-tz="Europe/Oslo">
+<div class="v5-cal-head"><strong>挪威</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="瑞典" data-code="SE" data-lat="59.3293" data-lon="18.0686" data-tz="Europe/Stockholm">
+<div class="v5-cal-head"><strong>瑞典</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="芬兰" data-code="FI" data-lat="60.1699" data-lon="24.9384" data-tz="Europe/Helsinki">
+<div class="v5-cal-head"><strong>芬兰</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div><div class="v5-cal-card" data-country="波兰" data-code="PL" data-lat="52.2297" data-lon="21.0122" data-tz="Europe/Warsaw">
+<div class="v5-cal-head"><strong>波兰</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
+<div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+<div class="v5-days"></div></div></div>
+</section>
+
+<div class="grid v5-hidden-overview" id="overview"></div>
 <div class="section card"><h2>🗺️ 欧洲天气 × 中国体感地图</h2>
 <div class="realmap-wrap">
   <div id="chinaMap" class="realmap"><div class="china-map-loading">中国体感地图加载中…</div></div>
@@ -813,12 +952,24 @@ const localFacts={
  }
 };
 
+const indoorActionsV55={
+ '德国':'降温或阴雨时，咖啡馆、面包店、居家烘焙/做饭、朋友家庭聚会、博物馆与室内购物更自然。',
+ '法国':'咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊与室内购物，是秋季常见的室内生活场景。',
+ '西班牙':'餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场与购物中心更适合雨天或晚间社交场景。',
+ '意大利':'咖啡馆喝 Espresso、餐厅与家庭餐桌、居家做饭/烘焙、朋友家庭聚会及室内文化场馆都很自然。',
+ '荷兰':'风雨天气下更偏向咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店和室内购物。',
+ '挪威':'低温风雨时以木屋/居家休息、热饮、桑拿、壁炉边聊天、家庭聚会和阅读为主。',
+ '瑞典':'Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读与家居生活，是典型秋季室内场景。',
+ '芬兰':'桑拿、咖啡、居家烘焙、阅读、家庭时间和暖感木质空间，是转凉后的典型室内生活。',
+ '波兰':'咖啡馆、家庭餐桌、热饮/烘焙、朋友聚会、室内市场和购物场景随秋季降温增加。'
+};
+
 function render(rows){const order=['德国','法国','西班牙','意大利','荷兰','挪威','瑞典','芬兰','波兰'];rows.sort((a,b)=>order.indexOf(a.c)-order.indexOf(b.c));document.getElementById('updated').textContent='实时更新｜'+new Date().toLocaleString('zh-CN',{hour12:false});document.getElementById('overview').innerHTML=rows.map(x=>`<div class="mini"><b>${x.f} ${x.c}</b><div class="t">${x.lo}~${x.hi}℃ ${x.ic}</div><small>${x.season}｜${x.tr.replace(/^.. /,'')}</small></div>`).join('');renderChinaMap(rows);const regionOrder=['西欧','中欧','南欧','北欧'];const tableRows=[...rows].sort((a,b)=>{let d=regionOrder.indexOf(a.r)-regionOrder.indexOf(b.r);return d||order.indexOf(a.c)-order.indexOf(b.c)});document.getElementById('tbody').innerHTML=tableRows.map(x=>`<tr><td><span class="region">${x.r}</span>｜${x.f}${x.c}</td><td>${x.lo}~${x.hi}℃ ${x.ic}<br><small>降雨${x.rain}% · 风${x.wind}km/h</small></td><td>${x.cn}</td><td>${x.wear}</td><td>${x.tr}</td></tr>`).join('');document.getElementById('details').innerHTML=rows.map(x=>{const f=localFacts[x.c]||{};const avg=((Number(x.lo)+Number(x.hi))/2).toFixed(1);return `<div class="card country local-card">
 <div class="country-head"><div class="country-head-left">${x.c}<span class="ccode">${(countryMeta[x.c]||[])[0]||""}</span><small>${(countryMeta[x.c]||[])[1]||""}</small></div><div class="country-head-right">6城今日均温 <b>${avg}°</b></div></div>
 <div class="local-map" data-country="${x.c}"><div class="country-interactive-map"><div class="map-loading">互动地图加载中…</div></div><div class="map-tip">鼠标悬停城市查看天气位置</div></div>
 <div class="local-body"><h3>${x.f} ${x.c}｜${x.season}</h3>
 <div class="tags"><span class="tag">📍${x.cn}</span><span class="tag">🧥${x.wear}</span></div>
-<p><b>当地行动：</b>${x.culture}</p><p><b>素材机会：</b>${x.scene}</p>
+<p class="outdoor-action-v56"><b>🌳 室外行动：</b>${x.culture}</p><p class="indoor-action-v55"><b>🏠 室内行动：</b>${indoorActionsV55[x.c]||""}</p><p><b>素材机会：</b>${x.scene}</p>
 <div class="fact-ref"><span class="fact-date">📅 ${f.time||'季节参考'}</span><b>${f.title||''}</b><br>${f.note||''}<br>
 <a href="${f.url||'#'}" target="_blank" rel="noopener">🔗 查看事实依据｜${f.source||'官方来源'}</a></div></div>
 ${buildCityStrip(x)}</div>`}).join('')}
@@ -988,8 +1139,8 @@ function updateDynamicInsights(){
     [...card.querySelectorAll('p,div')].forEach(el=>{
       if(el.children.length>2) return;
       const s=(el.textContent||"").trim();
-      if(/^当地行动[：:]/.test(s))
-        el.innerHTML='<strong>当地行动：</strong> '+insight.actions;
+      if(/^(当地行动|🌳\s*室外行动)[：:]/.test(s))
+        el.innerHTML='<strong>🌳 室外行动：</strong> '+insight.actions;
       else if(/^素材机会[：:]/.test(s))
         el.innerHTML='<strong>素材机会：</strong> '+insight.materials;
     });
@@ -1007,4 +1158,291 @@ if(insightRoot){
 }
 window.addEventListener('load',()=>setTimeout(updateDynamicInsights,250));
 /* ===== V3.8 end ===== */
-</script></body></html>
+</script>
+<script id="v5-complete-js">
+(function(){
+const H={
+"DE":{"2026-09-19":"慕尼黑啤酒节","2026-10-03":"德国统一日","2026-12-25":"圣诞节","2026-12-26":"圣诞次日"},
+"FR":{"2026-09-19":"文化遗产日","2026-09-20":"文化遗产日","2026-11-01":"诸圣节","2026-11-11":"停战纪念日","2026-12-25":"圣诞节"},
+"ES":{"2026-10-12":"西班牙国庆日","2026-11-01":"诸圣节","2026-12-06":"宪法日","2026-12-08":"圣母无染原罪日","2026-12-25":"圣诞节"},
+"IT":{"2026-11-01":"诸圣节","2026-12-08":"圣母无染原罪日","2026-12-25":"圣诞节","2026-12-26":"圣斯德望日"},
+"NL":{"2026-12-25":"圣诞节","2026-12-26":"圣诞次日"},
+"NO":{"2026-12-25":"圣诞节","2026-12-26":"圣诞次日"},
+"SE":{"2026-11-01":"诸圣日","2026-12-25":"圣诞节","2026-12-26":"圣诞次日"},
+"FI":{"2026-12-06":"独立日","2026-12-25":"圣诞节","2026-12-26":"节礼日"},
+"PL":{"2026-11-01":"诸圣节","2026-11-11":"独立日","2026-12-25":"圣诞节","2026-12-26":"圣诞次日"}
+};
+function tp(tz){const p=new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'}).formatToParts(new Date()),o={};p.forEach(x=>o[x.type]=x.value);return {h:+o.hour%24,m:+o.minute,s:+o.second}}
+function tick(){document.querySelectorAll('.v5-clock-card').forEach(c=>{const t=tp(c.dataset.tz);c.querySelector('.v5hour').style.transform=`rotate(${(t.h%12)*30+t.m*.5+t.s/120}deg)`;c.querySelector('.v5minute').style.transform=`rotate(${t.m*6+t.s*.1}deg)`;c.querySelector('.v5second').style.transform=`rotate(${t.s*6}deg)`})}
+function wi(c){if(c===0)return'☀️';if([1,2].includes(c))return'🌤️';if(c===3)return'☁️';if([45,48].includes(c))return'🌫️';if([51,53,55,56,57].includes(c))return'🌦️';if([61,63,65,66,67,80,81,82].includes(c))return'🌧️';if([71,73,75,77,85,86].includes(c))return'🌨️';if([95,96,99].includes(c))return'⛈️';return'🌥️'}
+function localYM(tz){const p=new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};p.forEach(x=>o[x.type]=x.value);return {y:+o.year,m:+o.month,d:+o.day}}
+async function renderCard(card){
+ const q=localYM(card.dataset.tz), y=q.y,m=q.m, last=new Date(Date.UTC(y,m,0)).getUTCDate(), first=(new Date(Date.UTC(y,m-1,1)).getUTCDay()+6)%7;
+ card.querySelector('.v5-month').textContent=`${y}年${m}月`; const days=card.querySelector('.v5-days'); days.innerHTML='';
+ let daily=null;
+ const cacheKey=`v57_weather_${card.dataset.code}`;
+ const u=`https://api.open-meteo.com/v1/forecast?latitude=${card.dataset.lat}&longitude=${card.dataset.lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=${encodeURIComponent(card.dataset.tz)}&past_days=31&forecast_days=16`;
+ // V5.7：单国失败自动重试；成功后缓存，临时网络异常时保留上一次成功天气。
+ for(let attempt=0;attempt<3&&!daily;attempt++){
+   try{
+     if(attempt) await new Promise(r=>setTimeout(r,700*attempt));
+     const res=await fetch(u,{cache:'no-store'});
+     if(!res.ok) throw new Error('weather '+res.status);
+     const j=await res.json();
+     if(j&&j.daily&&Array.isArray(j.daily.time)&&j.daily.time.length){daily=j.daily;try{localStorage.setItem(cacheKey,JSON.stringify({t:Date.now(),daily}))}catch(_){}}
+   }catch(e){}
+ }
+ if(!daily){try{const c=JSON.parse(localStorage.getItem(cacheKey)||'null');if(c&&c.daily)daily=c.daily}catch(e){}}
+ const map={}; if(daily&&daily.time)daily.time.forEach((d,i)=>map[d]={hi:Math.round(daily.temperature_2m_max[i]),lo:Math.round(daily.temperature_2m_min[i]),code:daily.weather_code[i]});
+ const today=`${y}-${String(m).padStart(2,'0')}-${String(q.d).padStart(2,'0')}`, tw=map[today];
+ card.querySelector('.v5-today').textContent=tw?`${tw.lo}~${tw.hi}℃ ${wi(tw.code)}`:'当月天气';
+ for(let i=0;i<first;i++){const e=document.createElement('div');e.className='v5day empty';days.appendChild(e)}
+ for(let d=1;d<=last;d++){const iso=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`, x=document.createElement('div');x.className='v5day'+(d===q.d?' today':'');const w=map[iso],hol=(H[card.dataset.code]||{})[iso];x.innerHTML=`<b>${d}</b>${w?`<em>${wi(w.code)}</em>`:''}${hol?`<span class="v5holiday">${hol}</span>`:''}`;days.appendChild(x)}
+}
+tick();setInterval(tick,1000);
+async function refreshAllCalendars(){
+ const cards=[...document.querySelectorAll('.v5-cal-card')];
+ for(const card of cards){await renderCard(card);await new Promise(r=>setTimeout(r,220));}
+}
+refreshAllCalendars();
+setInterval(refreshAllCalendars,3600000);
+})();
+</script>
+
+
+<script id="v5-2-season-indoor">
+(function(){
+ function seasonText(m){
+   if(m===12||m<=2)return '冬季';
+   if(m<=5)return '春季';
+   if(m<=8)return '夏季';
+   if(m===9)return '初秋';
+   if(m===10)return '秋季';
+   return '深秋';
+ }
+ function refreshSeason(){
+   document.querySelectorAll('.v5-cal-card').forEach(card=>{
+     const tz=card.dataset.tz;
+     const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,month:'numeric'}).formatToParts(new Date());
+     const m=+(p.find(x=>x.type==='month')||{}).value;
+     const el=card.querySelector('.v5-season');
+     if(el)el.textContent='｜'+seasonText(m);
+   });
+ }
+ refreshSeason();
+
+ const indoor={
+ '德国':'降温或阴雨时更自然转向室内：咖啡馆喝咖啡/热饮、面包店买烘焙、家中做饭与烘焙、朋友家庭聚会、博物馆/展览、室内购物。素材可重点表现暖光、木质桌面、马克杯、烘焙、针织毯/毛衣、窗边雨景。',
+ '法国':'阴雨和转凉时，咖啡馆、餐厅与居家生活更自然：咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊、室内购物。素材可用咖啡杯、可颂/甜点、餐桌、暖灯、窗边阅读、针织穿搭。',
+ '西班牙':'天气不适合户外时，生活会转向餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场和购物中心；晚间社交仍较活跃。素材可表现多人餐桌、咖啡、料理过程、暖色室内、朋友互动和家庭场景。',
+ '意大利':'降雨或降温时适合咖啡馆、餐厅、家庭餐桌和室内社交：喝 espresso、做饭/烘焙、家庭聚餐、逛室内商店与文化场馆。素材可用咖啡杯、面包/料理、餐桌、暖光厨房、针织与居家慢生活。',
+ '荷兰':'风雨天气下室内活动价值明显：咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店/商店、室内购物。素材可强调窗外雨景与室内暖光反差，搭配热饮、花束、蜡烛、毛毯、针织。',
+ '挪威':'低温、风雨天气下室内生活很重要：木屋/家中休息、咖啡与热饮、桑拿、壁炉边聊天、家庭聚会、阅读。素材可突出木屋、壁炉/蜡烛暖光、羊毛针织、马克杯、毛毯、桑拿与窗外冷天气。',
+ '瑞典':'进入秋季后室内 cosy 场景非常自然：Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读和家居布置。素材重点可用咖啡+甜点、蜡烛暖光、木质家居、针织、毛毯、窗边阴雨。',
+ '芬兰':'转凉后室内活动以桑拿、咖啡、居家烘焙、阅读和家庭时间为主；天气差时室内暖感更明显。素材可表现桑拿、木质空间、咖啡杯、烘焙、暖灯、羊毛袜/针织、窗外秋雨或冷空气。',
+ '波兰':'秋季降温后，咖啡馆、家庭餐桌、烘焙、朋友聚会、室内市场/购物等场景自然增加。素材可使用热饮、汤/烘焙、餐桌、暖光家居、针织毛毯、窗边雨景，突出室内温暖感。'
+ };
+ function addIndoor(){
+   document.querySelectorAll('#details > *').forEach(card=>{
+     const txt=card.textContent||'';
+     const country=Object.keys(indoor).find(x=>txt.includes(x));
+     if(!country)return;
+     let box=card.querySelector('.indoor-action-v51');
+     if(!box){
+       const main=card.querySelector('.culture-main')||card;
+       box=document.createElement('div');
+       box.className='indoor-action-v51';
+       main.appendChild(box);
+     }
+     box.innerHTML='<b>🏠 室内行动：</b>'+indoor[country];
+   });
+ }
+ setTimeout(addIndoor,1000);
+ setTimeout(addIndoor,2200);
+})();
+</script>
+
+<script>
+
+const HOLIDAYS_2026 = {
+ '德国': {'01-01':'元旦','04-03':'耶稣受难日','04-06':'复活节星期一','05-01':'劳动节','05-14':'耶稣升天节','05-25':'圣灵降临节星期一','10-03':'德国统一日','12-25':'圣诞节','12-26':'圣诞次日'},
+ '法国': {'01-01':'元旦','04-06':'复活节星期一','05-01':'劳动节','05-08':'二战胜利日','05-14':'耶稣升天节','05-25':'圣灵降临节星期一','07-14':'法国国庆日','08-15':'圣母升天节','11-01':'诸圣节','11-11':'停战纪念日','12-25':'圣诞节'},
+ '西班牙': {'01-01':'元旦','01-06':'主显节','04-03':'耶稣受难日','05-01':'劳动节','08-15':'圣母升天节','10-12':'西班牙国庆日','11-01':'诸圣节','12-06':'宪法日','12-08':'圣母无染原罪日','12-25':'圣诞节'},
+ '意大利': {'01-01':'元旦','01-06':'主显节','04-06':'复活节星期一','04-25':'解放日','05-01':'劳动节','06-02':'共和国日','08-15':'圣母升天节','11-01':'诸圣节','12-08':'圣母无染原罪日','12-25':'圣诞节','12-26':'圣斯德望日'},
+ '荷兰': {'01-01':'元旦','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','04-27':'国王节','05-05':'解放日','05-14':'耶稣升天节','05-24':'圣灵降临节','05-25':'圣灵降临节星期一','12-25':'圣诞节','12-26':'圣诞次日'},
+ '挪威': {'01-01':'元旦','04-02':'濯足节','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-14':'耶稣升天节','05-17':'挪威宪法日','05-24':'圣灵降临节','05-25':'圣灵降临节星期一','12-25':'圣诞节','12-26':'圣诞次日'},
+ '瑞典': {'01-01':'元旦','01-06':'主显节','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-14':'耶稣升天节','06-06':'瑞典国庆日','06-20':'仲夏节','10-31':'诸圣日','12-25':'圣诞节','12-26':'圣诞次日'},
+ '芬兰': {'01-01':'元旦','01-06':'主显节','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','05-01':'五一节','05-14':'耶稣升天节','06-20':'仲夏节','10-31':'诸圣日','12-06':'芬兰独立日','12-24':'平安夜','12-25':'圣诞节','12-26':'圣斯德望日'},
+ '波兰': {'01-01':'元旦','01-06':'主显节','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-03':'宪法日','05-24':'圣灵降临节','06-04':'圣体节','08-15':'圣母升天节','11-01':'诸圣节','11-11':'独立日','12-25':'圣诞节','12-26':'圣诞次日'}
+};
+
+function applyCalendarHolidays(){
+  document.querySelectorAll('.v5-cal-card').forEach(card=>{
+    const text = card.textContent || '';
+    const country = Object.keys(HOLIDAYS_2026).find(c=>text.includes(c));
+    if(!country) return;
+    const title = card.querySelector('.v5-cal-title');
+    const ym = title ? (title.textContent.match(/(20\d{2})年(\d{1,2})月/)||[]) : [];
+    if(!ym.length) return;
+    const year = +ym[1], month = +ym[2];
+    if(year !== 2026) return;
+    const map = HOLIDAYS_2026[country] || {};
+    card.querySelectorAll('.v5-day').forEach(cell=>{
+      const n = cell.querySelector('.v5-num');
+      if(!n) return;
+      const day = parseInt(n.textContent,10);
+      if(!day) return;
+      const key = String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+      const holiday = map[key];
+      let tag = cell.querySelector('.v5-holiday');
+      if(holiday){
+        if(!tag){ tag=document.createElement('span'); tag.className='v5-holiday'; cell.appendChild(tag); }
+        tag.textContent=holiday;
+        cell.classList.add('is-holiday');
+      } else if(tag){ tag.remove(); cell.classList.remove('is-holiday'); }
+    });
+  });
+}
+setTimeout(applyCalendarHolidays,900);
+setTimeout(applyCalendarHolidays,2200);
+</script>
+
+<script id="v5-3-indoor-position">
+(function(){
+ function repositionIndoor(){
+   document.querySelectorAll('.indoor-action-v51').forEach(box=>{
+     const parent=box.parentElement;
+     if(!parent)return;
+     const children=[...parent.children];
+     const festival=children.find(x=>x!==box && /节|葡萄|苹果|收获|季|庆典|活动/.test(x.textContent||'') && (x.className||'').toString().match(/event|culture|festival|scene|card/i));
+     if(festival) parent.insertBefore(box,festival);
+   });
+ }
+ setTimeout(repositionIndoor,1200);
+ setTimeout(repositionIndoor,2500);
+})();
+</script>
+
+
+<style id="v5-4-final-fix">
+/* 节日：直接显示在日期格内 */
+.v54-holiday{
+  display:block;
+  margin-top:1px;
+  font-size:8px;
+  line-height:9px;
+  font-weight:700;
+  color:#e34b5f;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.v54-holiday-cell{background:#fff7f8!important}
+
+/* 室内行动：与当地行动、素材机会同层级 */
+.v54-indoor{
+  margin:8px 0;
+  font-size:inherit;
+  line-height:1.75;
+  color:inherit;
+}
+.v54-indoor b{color:#183b68}
+</style>
+
+<script id="v5-4-final-fix">
+(function(){
+const H={
+'德国':{'01-01':'元旦','04-03':'耶稣受难日','04-06':'复活节星期一','05-01':'劳动节','05-14':'耶稣升天节','05-25':'圣灵降临节','10-03':'德国统一日','12-25':'圣诞节','12-26':'圣诞次日'},
+'法国':{'01-01':'元旦','04-06':'复活节星期一','05-01':'劳动节','05-08':'二战胜利日','05-14':'耶稣升天节','05-25':'圣灵降临节','07-14':'法国国庆日','08-15':'圣母升天节','11-01':'诸圣节','11-11':'停战纪念日','12-25':'圣诞节'},
+'西班牙':{'01-01':'元旦','01-06':'主显节','04-03':'耶稣受难日','05-01':'劳动节','08-15':'圣母升天节','10-12':'西班牙国庆日','11-01':'诸圣节','12-06':'宪法日','12-08':'圣母无染原罪日','12-25':'圣诞节'},
+'意大利':{'01-01':'元旦','01-06':'主显节','04-06':'复活节星期一','04-25':'解放日','05-01':'劳动节','06-02':'共和国日','08-15':'圣母升天节','11-01':'诸圣节','12-08':'圣母无染原罪日','12-25':'圣诞节','12-26':'圣斯德望日'},
+'荷兰':{'01-01':'元旦','04-05':'复活节','04-06':'复活节星期一','04-27':'国王节','05-05':'解放日','05-14':'耶稣升天节','05-24':'圣灵降临节','05-25':'圣灵降临节星期一','12-25':'圣诞节','12-26':'圣诞次日'},
+'挪威':{'01-01':'元旦','04-02':'濯足节','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-14':'耶稣升天节','05-17':'宪法日','05-24':'圣灵降临节','05-25':'圣灵降临节','12-25':'圣诞节','12-26':'圣诞次日'},
+'瑞典':{'01-01':'元旦','01-06':'主显节','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-14':'耶稣升天节','06-06':'瑞典国庆日','06-20':'仲夏节','10-31':'诸圣日','12-25':'圣诞节','12-26':'圣诞次日'},
+'芬兰':{'01-01':'元旦','01-06':'主显节','04-03':'耶稣受难日','04-05':'复活节','04-06':'复活节星期一','05-01':'五一节','05-14':'耶稣升天节','06-20':'仲夏节','10-31':'诸圣日','12-06':'独立日','12-24':'平安夜','12-25':'圣诞节','12-26':'圣斯德望日'},
+'波兰':{'01-01':'元旦','01-06':'主显节','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-03':'宪法日','05-24':'圣灵降临节','06-04':'圣体节','08-15':'圣母升天节','11-01':'诸圣节','11-11':'独立日','12-25':'圣诞节','12-26':'圣诞次日'}
+};
+
+const INDOOR={
+'德国':'降温或阴雨时，咖啡馆、面包店、居家烘焙/做饭、朋友家庭聚会、博物馆与室内购物更自然。',
+'法国':'咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊与室内购物。',
+'西班牙':'餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场与购物中心，晚间室内社交依然活跃。',
+'意大利':'咖啡馆喝 Espresso、餐厅与家庭餐桌、居家做饭/烘焙、朋友家庭聚会及室内文化场馆。',
+'荷兰':'风雨天气下更偏向咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店和室内购物。',
+'挪威':'低温风雨时以木屋/居家休息、热饮、桑拿、壁炉边聊天、家庭聚会和阅读为主。',
+'瑞典':'Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读与家居生活更典型。',
+'芬兰':'桑拿、咖啡、居家烘焙、阅读、家庭时间和暖感木质空间，是转凉后的典型室内生活。',
+'波兰':'咖啡馆、家庭餐桌、热饮/烘焙、朋友聚会、室内市场和购物场景随秋季降温增加。'
+};
+
+function countryOf(el){
+ const t=el.textContent||'';
+ return Object.keys(H).find(c=>t.includes(c));
+}
+function monthOf(el){
+ const m=(el.textContent||'').match(/2026年\s*(\d{1,2})月/);
+ return m?+m[1]:9;
+}
+
+/* 日历节日：扫描9张自然月日历中的小日期格 */
+function renderHolidays(){
+ const all=[...document.querySelectorAll('div')];
+ Object.keys(H).forEach(country=>{
+   const candidates=all.filter(el=>{
+     const t=el.textContent||'';
+     return t.includes(country) && /2026年\s*\d{1,2}月/.test(t) &&
+            el.querySelectorAll('div').length>20;
+   });
+   if(!candidates.length)return;
+   // 取最小的、仍包含完整月历的容器
+   candidates.sort((a,b)=>a.querySelectorAll('div').length-b.querySelectorAll('div').length);
+   const card=candidates[0], month=monthOf(card);
+   const map=H[country];
+   [...card.querySelectorAll('div')].forEach(cell=>{
+     // 找“单个日期格”：文本开头是1~31，且自身不含大量子元素
+     if(cell.children.length>5)return;
+     const raw=(cell.textContent||'').trim();
+     const mm=raw.match(/^([1-9]|[12]\d|3[01])(?:\s|$)/);
+     if(!mm)return;
+     const day=+mm[1];
+     const key=String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+     const name=map[key];
+     if(!name)return;
+     if(cell.querySelector('.v54-holiday'))return;
+     const tag=document.createElement('span');
+     tag.className='v54-holiday';
+     tag.textContent=name;
+     tag.title=name;
+     cell.appendChild(tag);
+     cell.classList.add('v54-holiday-cell');
+   });
+ });
+}
+
+/* 室内行动：精确插到“当地行动”之后、“素材机会”之前 */
+function renderIndoor(){
+ Object.keys(INDOOR).forEach(country=>{
+   const nodes=[...document.querySelectorAll('div,p')].filter(el=>{
+      const t=(el.textContent||'').trim();
+      return (t.startsWith('当地行动：')||t.startsWith('🌳 室外行动：')) && t.length<260 &&
+             (el.closest('section,article,div')?.textContent||'').includes(country);
+   });
+   if(!nodes.length)return;
+   const action=nodes[0];
+   const parent=action.parentElement;
+   if(!parent || parent.querySelector('.v54-indoor'))return;
+   const row=document.createElement(action.tagName.toLowerCase()==='p'?'p':'div');
+   row.className='v54-indoor';
+   row.innerHTML='<b>🏠 室内行动：</b>'+INDOOR[country];
+   action.insertAdjacentElement('afterend',row);
+ });
+}
+
+function run(){renderHolidays();renderIndoor();}
+setTimeout(run,400);
+setTimeout(run,1200);
+setTimeout(run,2600);
+})();
+</script>
+
+</body></html>
