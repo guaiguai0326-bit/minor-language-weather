@@ -1993,4 +1993,48 @@ window.addEventListener('resize',schedule,{passive:true});
 for(const a of links)a.addEventListener('click',()=>{setTimeout(update,80);setTimeout(update,420)});
 update();
 })();
+</script><script id="v6-nav-scrollspy-v2">
+(function(){
+const nav=document.querySelector('.quick-read');
+const main=document.querySelector('body>.wrap');
+if(!nav||!main)return;
+const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+const entries=links.map(a=>({a,section:document.getElementById(a.getAttribute('href').slice(1))})).filter(x=>x.section);
+const label=nav.querySelector('.quick-read-label');
+if(label)label.textContent='快速阅读 · 当前模块';
+const highlight=(item)=>{
+ for(const e of entries){
+ const yes=e===item;
+ e.a.style.setProperty('background',yes?'#dcecff':'transparent','important');
+ e.a.style.setProperty('color',yes?'#1455a0':'#456181','important');
+ e.a.style.setProperty('font-weight',yes?'800':'700','important');
+ e.a.style.setProperty('box-shadow',yes?'inset 4px 0 0 #2784ed':'none','important');
+ e.a.style.setProperty('border-radius','9px','important');
+ if(yes)e.a.setAttribute('aria-current','location');else e.a.removeAttribute('aria-current');
+ }
+};
+function update(){
+ const viewportMarker=Math.min(210,window.innerHeight*.32);
+ let active=entries[0];
+ for(const e of entries){if(e.section.getBoundingClientRect().top<=viewportMarker)active=e}
+ if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-10)active=entries[entries.length-1];
+ highlight(active);
+}
+let pending=false;
+function tick(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;update()})}
+window.addEventListener('scroll',tick,{passive:true});
+window.addEventListener('resize',tick,{passive:true});
+window.addEventListener('hashchange',()=>setTimeout(update,100));
+links.forEach(a=>a.addEventListener('click',()=>setTimeout(update,160)));
+if(window.innerWidth>=1180){
+ const sidebarWidth=154;
+ main.style.setProperty('margin-left','176px','important');
+ main.style.setProperty('width','calc(100% - 176px)','important');
+ main.style.setProperty('padding-right','14px','important');
+ nav.style.setProperty('left','8px','important');
+ nav.style.setProperty('width',sidebarWidth+'px','important');
+ nav.style.setProperty('padding','14px 8px','important');
+}
+update();
+})();
 </script></body></html>
