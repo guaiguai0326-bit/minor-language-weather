@@ -683,8 +683,144 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 .v5holiday{z-index:3!important;background:rgba(255,255,255,.88);border-radius:3px;padding:0 1px}
 .v5day:has(.v5holiday){background:#fff6f7!important}
 </style>
-</head><body><div class="wrap"><div class="top"><div class="title"><h1>🌍 小语种市场天气看板</h1><p>天气事实 → 中国体感 → 当地生活行动 → 素材机会 → 未来7天</p></div><div class="pill" id="updated">正在更新天气…</div></div>
-<section class="v5-panel">
+<style id="v6-style">
+#v6-intel{max-width:1500px;margin:28px auto;padding:0 18px 36px;color:#1b2940;font-family:inherit}#v6-intel *{box-sizing:border-box}#v6-intel .v6-top{padding:23px 25px;background:linear-gradient(110deg,#162b4c,#2f5e8f);color:white;border-radius:20px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}#v6-intel .v6-top h2{margin:5px 0;font-size:25px}#v6-intel .v6-top p{margin:0;color:#d8e5f6;font-size:13px}#v6-intel .v6-status{background:#ffffff25;padding:7px 12px;border-radius:40px;font-size:12px}#v6-intel .v6-tabs,#v6-intel .v6-countries{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}#v6-intel button{cursor:pointer;font-family:inherit}#v6-intel .v6-tab,#v6-intel .v6-country{border:1px solid #dce5f1;background:white;border-radius:30px;padding:9px 15px;color:#43536b;font-size:13px}#v6-intel .v6-tab.on,#v6-intel .v6-country.on{background:#2b5b8e;border-color:#2b5b8e;color:white}#v6-intel .v6-note{background:#fff7e7;border:1px solid #f5dfb6;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.7;color:#806027;margin:12px 0}#v6-intel .v6-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}#v6-intel .v6-card{background:white;border:1px solid #e3eaf3;border-radius:16px;padding:17px;box-shadow:0 5px 18px #15284409;min-height:175px}#v6-intel .v6-card h3{font-size:16px;margin:5px 0 10px}#v6-intel .v6-card p{font-size:13px;line-height:1.75;color:#59677d;margin:6px 0}#v6-intel .v6-card .v6-label{font-size:11px;letter-spacing:.4px;color:#5277a4;font-weight:700}#v6-intel .v6-card a{font-size:13px;color:#2361a2;word-break:break-all}#v6-intel .v6-chip{display:inline-block;font-size:11px;padding:4px 8px;border-radius:12px;background:#edf3f9;color:#55718e;margin:3px 5px 3px 0}#v6-intel .v6-empty{padding:24px;border:1px dashed #d2ddec;border-radius:15px;background:#f9fbfe;color:#61718a;line-height:1.8}#v6-intel .v6-tabs,#v6-intel .v6-countries{display:none!important}#v6-intel .v6-panel{display:block;margin:24px 0 34px}#v6-intel .v6-section-heading{font-size:21px;color:#19395e;margin:0 0 14px;padding:0 0 12px;border-bottom:2px solid #dce7f4}#v6-intel .v6-country-block{margin:16px 0 25px;padding:17px;background:#f8fbff;border:1px solid #dce7f4;border-radius:16px}#v6-intel .v6-country-heading{font-size:17px;margin:0 0 10px;color:#204c7a}#v6-intel .v6-country-block .v6-card{min-height:135px}#v6-intel .v6-sub{font-size:13px;color:#68788c;margin:12px 0}#v6-intel .v6-source{font-size:12px;color:#8a96a7;margin-top:10px}#v6-intel .v6-card ul{font-size:13px;color:#59677d;line-height:1.9;padding-left:18px}@media(max-width:850px){#v6-intel .v6-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:580px){#v6-intel .v6-grid{grid-template-columns:1fr}#v6-intel .v6-top h2{font-size:20px}}
+</style><style id="v6-layout-polish">
+html{scroll-behavior:smooth}
+.quick-read{display:flex;align-items:center;flex-wrap:wrap;gap:9px 10px;margin:0 0 20px;padding:14px 16px;border:1px solid #e0e8f2;border-radius:16px;background:#fff;box-shadow:0 3px 12px rgba(22,48,82,.04);position:static!important}
+.quick-read-label{font-size:13px;font-weight:800;color:#344e6d;margin-right:4px}
+.quick-read a{display:inline-flex;align-items:center;justify-content:center;padding:9px 13px;border:1px solid #dfe7f2;border-radius:9px;background:#f6f9fd;color:#315679;font-size:13px;font-weight:700;text-decoration:none;transition:background .15s,border-color .15s}
+.quick-read a:hover,.quick-read a:focus-visible{background:#e8f1ff;border-color:#9ebeea;color:#194f8e}
+#section-weather,#section-map,#section-compare,#section-culture,#v6-intel,#v6-overview,#v6-gift-signals-section{scroll-margin-top:20px}
+#v6-intel .v6-overview-row,#v6-intel .v6-overview-header{grid-template-columns:minmax(100px,0.72fr) repeat(4,minmax(0,1fr));gap:12px;align-items:start}
+#v6-intel .v6-overview-row{padding:17px 14px;overflow:visible}
+#v6-intel .v6-market-cell{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+#v6-intel .v6-market-cell strong{overflow-wrap:anywhere;line-height:1.45}
+#v6-intel .v6-market-cell img{max-width:100%;height:auto;object-fit:contain}
+#v6-intel .v6-live-item{min-width:0;overflow-wrap:anywhere;line-height:1.55;padding:10px 0;border-bottom:1px dashed #e3eaf3}
+#v6-intel .v6-live-item strong{display:block;margin-bottom:5px;line-height:1.5}
+#v6-intel .v6-live-item a{max-width:100%;overflow-wrap:anywhere}
+#v6-intel .v6-live-item:last-child{border-bottom:0}
+#v6-intel .v6-market-cell{gap:7px}
+#v6-intel .v6-overview-row+.v6-overview-row{margin-top:12px}
+@media(max-width:1100px){#v6-intel .v6-overview-header{display:none}#v6-intel .v6-overview-row{grid-template-columns:repeat(2,minmax(0,1fr))}#v6-intel .v6-market-name{grid-column:1/-1}#v6-intel .v6-market-cell{padding:12px;border:1px solid #e9eef5;border-radius:10px;background:#fafcff}}
+@media(max-width:640px){.quick-read{padding:12px;gap:8px}.quick-read-label{width:100%}.quick-read a{font-size:12px;padding:8px 10px}#v6-intel .v6-overview-row{grid-template-columns:1fr}#v6-intel .v6-market-cell{border-left:1px solid #e9eef5}#v6-intel .v6-overview-row{padding:12px}}
+</style><style id="v6-reading-layout-final">
+/* Desktop: navigation occupies its own left rail; it never covers content. */
+@media(min-width:1180px){
+ body>.wrap{max-width:none!important;width:calc(100% - 228px)!important;margin:0 0 0 228px!important;padding:22px 26px 44px!important}
+ body>.wrap>.quick-read{position:fixed!important;top:18px!important;left:16px!important;bottom:18px!important;width:194px!important;z-index:30!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;flex-wrap:nowrap!important;overflow-y:auto!important;gap:7px!important;margin:0!important;padding:18px 12px!important;box-shadow:0 6px 22px rgba(26,49,76,.06)!important}
+ body>.wrap>.quick-read .quick-read-label{display:block;width:100%;padding:4px 7px 11px;border-bottom:1px solid #e5ebf4;margin:0 0 7px}
+ body>.wrap>.quick-read a{display:flex;width:100%;justify-content:flex-start;padding:12px 13px;font-size:13px}
+}
+@media(min-width:1180px) and (max-width:1400px){body>.wrap{padding:20px 18px 40px!important}}
+/* Market intelligence: one country heading + four readable cards, rather than five uneven columns. */
+#v6-intel #v6-overview .v6-overview-header{display:none!important}
+#v6-intel #v6-overview .v6-overview-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;align-items:stretch!important;padding:20px!important;margin:16px 0 22px!important;border:1px solid #dce6f2!important;border-radius:18px!important;background:#f7faff!important;box-shadow:0 4px 15px rgba(25,54,91,.035)!important}
+#v6-intel #v6-overview .v6-market-name{grid-column:1/-1!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:12px!important;padding:0 2px 13px!important;margin:0!important;border-bottom:1px solid #dce6f2!important;font-size:18px!important}
+#v6-intel #v6-overview .v6-market-name b{display:flex;align-items:center;gap:8px}
+#v6-intel #v6-overview .v6-market-name small{font-size:12px!important}
+#v6-intel #v6-overview .v6-market-cell{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;min-width:0!important;margin:0!important;padding:16px!important;border:1px solid #e1e8f2!important;border-radius:13px!important;background:#fff!important;box-shadow:none!important;overflow-wrap:anywhere!important;word-break:normal!important}
+#v6-intel #v6-overview .v6-market-cell .v605-mini{font-size:12px!important;font-weight:750!important;color:#2d567f!important;border-bottom:1px solid #edf1f6;padding-bottom:9px;margin-bottom:2px}
+#v6-intel #v6-overview .v6-market-cell strong{font-size:13px!important;line-height:1.55!important;overflow-wrap:anywhere!important}
+#v6-intel #v6-overview .v6-market-cell p{font-size:12px!important;line-height:1.65!important;margin:2px 0 6px!important;flex:none!important;color:#63758c!important}
+#v6-intel #v6-overview .v6-market-cell a{margin-top:5px!important;font-size:12px!important;line-height:1.6!important;align-self:flex-start!important}
+#v6-intel #v6-overview .v6-live-item{padding:12px 0!important;margin:0!important;min-width:0!important}
+#v6-intel #v6-overview .v6-live-item strong{font-size:13px!important;line-height:1.5!important}
+#v6-intel #v6-overview .v6-live-item small{font-size:11px!important;line-height:1.5!important}
+#v6-intel #v6-overview .v6-live-item img{display:block;max-width:100%!important;height:auto!important;object-fit:contain}
+#v6-intel #v6-overview .v6-market-cell em{display:none!important}
+#v6-intel .v605-heading{flex-wrap:wrap}
+#v6-intel .v6-gift-grid{gap:16px}
+@media(max-width:720px){
+ #v6-intel #v6-overview .v6-overview-row{grid-template-columns:minmax(0,1fr)!important;padding:12px!important;gap:10px!important}
+ #v6-intel #v6-overview .v6-market-cell{padding:13px!important}
+ #v6-intel #v6-overview .v6-market-name{flex-wrap:wrap}
+}
+</style><style id="v6-editorial-redesign">
+/* Editorial dashboard: calm hierarchy, consistent cards, no overlapping navigation */
+@media(min-width:1180px){
+ body>.wrap{width:calc(100% - 210px)!important;margin-left:210px!important;padding:28px clamp(20px,2.3vw,42px) 56px!important;max-width:none!important}
+ body>.wrap>.quick-read{left:14px!important;top:16px!important;bottom:16px!important;width:180px!important;padding:22px 12px!important;border-radius:18px!important;background:#fff!important;border:1px solid #e5ebf3!important}
+}
+.quick-read{box-shadow:0 4px 22px rgba(23,51,86,.045)!important}
+.quick-read a{border:0!important;background:transparent!important;color:#536a84!important;font-weight:600!important;transition:background .18s,color .18s}
+.quick-read a:hover,.quick-read a:focus-visible{background:#eef5fc!important;color:#194c83!important}
+.quick-read a:active{background:#e3effb!important}
+#v6-intel{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+#v6-intel .v6-top{border-radius:18px!important;padding:26px 30px!important;margin-bottom:20px!important}
+#v6-intel .v6-note{border-radius:12px!important;line-height:1.75!important;padding:15px 18px!important;margin-bottom:22px!important}
+#v6-intel #v6-overview{margin:28px 0 42px!important}
+#v6-intel #v6-overview .v6-overview-row{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important;background:#fff!important;padding:22px!important;border:1px solid #e2eaf3!important;box-shadow:0 5px 24px rgba(20,45,80,.045)!important;border-radius:20px!important;margin:0 0 20px!important}
+#v6-intel #v6-overview .v6-market-name{padding:0 0 15px!important;border-bottom:1px solid #e9eef5!important;margin-bottom:1px!important;gap:12px!important;color:#17395f!important}
+#v6-intel #v6-overview .v6-market-name b{font-size:20px!important;letter-spacing:.2px}
+#v6-intel #v6-overview .v6-market-name small{color:#8797aa!important;font-size:12px!important}
+#v6-intel #v6-overview .v6-market-cell{padding:18px 20px!important;border-radius:14px!important;border:1px solid #e8eef5!important;background:#fafcff!important;gap:10px!important;min-height:190px!important;box-shadow:none!important}
+#v6-intel #v6-overview .v6-market-cell .v605-mini{font-size:13px!important;font-weight:800!important;color:#274b73!important;border-bottom:1px solid #e8edf5!important;padding-bottom:11px!important;line-height:1.45!important}
+#v6-intel #v6-overview .v6-market-cell strong{font-size:13px!important;font-weight:700!important;color:#1d3553!important;line-height:1.65!important}
+#v6-intel #v6-overview .v6-market-cell p{font-size:12px!important;color:#72849a!important;line-height:1.75!important;margin:0!important}
+#v6-intel #v6-overview .v6-live-item{padding:12px 0!important;border-bottom:1px solid #e9eef5!important}
+#v6-intel #v6-overview .v6-live-item:last-child{border-bottom:0!important}
+#v6-intel #v6-overview .v6-live-item a{display:inline-block!important;margin-top:6px!important;color:#2464a1!important;text-decoration:none!important;font-weight:700!important}
+#v6-intel #v6-overview .v6-live-item img{max-height:150px!important;width:auto!important;max-width:100%!important;border-radius:8px!important}
+#v6-intel #v6-overview .v6-translation{font-size:12px!important;color:#607891!important;line-height:1.6!important}
+#v6-intel .v6-gift-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+#v6-intel .v6-gift-card{border-radius:15px!important;border-color:#e5ebf3!important;box-shadow:0 3px 15px rgba(20,45,80,.035)!important;padding:18px!important}
+#v6-intel .v605-heading h3{font-size:24px!important;letter-spacing:-.3px}
+#v6-intel .v605-section-title{margin-top:35px!important}
+@media(min-width:1180px) and (max-width:1470px){#v6-intel #v6-overview .v6-overview-row{gap:12px!important;padding:16px!important}#v6-intel #v6-overview .v6-market-cell{padding:14px!important}}
+@media(max-width:800px){#v6-intel #v6-overview .v6-overview-row{grid-template-columns:minmax(0,1fr)!important;padding:14px!important}#v6-intel #v6-overview .v6-market-cell{min-height:0!important;padding:16px!important}#v6-intel .v6-gift-grid{grid-template-columns:minmax(0,1fr)!important}}
+</style><style id="v6-four-column-alignment">
+/* Restore side-by-side reading: country | news | trends | products | ads. */
+@media(min-width:1080px){
+#v6-intel #v6-overview .v6-overview-row{
+display:grid!important;grid-template-columns:112px repeat(4,minmax(0,1fr))!important;
+gap:0!important;align-items:stretch!important;background:#fff!important;
+padding:0!important;margin:0 0 14px!important;border:1px solid #e3eaf3!important;
+border-radius:14px!important;box-shadow:0 3px 14px rgba(25,51,81,.035)!important;overflow:hidden!important}
+#v6-intel #v6-overview .v6-market-name{
+grid-column:auto!important;display:flex!important;flex-direction:column!important;
+align-items:flex-start!important;justify-content:flex-start!important;gap:8px!important;
+margin:0!important;padding:22px 12px!important;border:0!important;
+background:#f4f8fd!important;border-right:1px solid #e3eaf3!important}
+#v6-intel #v6-overview .v6-market-name b{font-size:17px!important;white-space:normal!important}
+#v6-intel #v6-overview .v6-market-name small{font-size:11px!important}
+#v6-intel #v6-overview .v6-market-cell{
+min-height:0!important;margin:0!important;padding:16px 14px!important;
+border:0!important;border-right:1px solid #e8edf4!important;border-radius:0!important;
+background:#fff!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;
+align-items:stretch!important;gap:8px!important}
+#v6-intel #v6-overview .v6-market-cell:last-child{border-right:0!important}
+#v6-intel #v6-overview .v6-market-cell .v605-mini{min-height:36px!important;display:flex!important;align-items:center!important;margin:0!important;padding:0 0 10px!important;font-size:12px!important;border-bottom:1px solid #e9eef5!important}
+#v6-intel #v6-overview .v6-market-cell strong{font-size:12px!important;line-height:1.55!important}
+#v6-intel #v6-overview .v6-market-cell p{font-size:11px!important;line-height:1.6!important}
+#v6-intel #v6-overview .v6-market-cell .v6-live-item{padding:10px 0!important;line-height:1.5!important}
+#v6-intel #v6-overview .v6-market-cell .v6-live-item strong{font-size:12px!important}
+#v6-intel #v6-overview .v6-market-cell .v6-live-item img{max-height:100px!important}
+#v6-intel #v6-overview .v6-market-cell .v6-live-item:nth-of-type(n+4){display:none!important}
+#v6-intel #v6-overview .v6-market-cell .v6-category-keyword-list{max-width:100%!important}
+#v6-intel #v6-overview .v6-market-cell .v6-category-chip{padding:8px 0!important;margin:0!important}
+}
+@media(min-width:1080px) and (max-width:1400px){
+body>.wrap{margin-left:185px!important;width:calc(100% - 185px)!important;padding:20px 15px 40px!important}
+body>.wrap>.quick-read{width:158px!important;left:12px!important}
+#v6-intel #v6-overview .v6-overview-row{grid-template-columns:88px repeat(4,minmax(0,1fr))!important}
+#v6-intel #v6-overview .v6-market-cell{padding:13px 9px!important}
+#v6-intel #v6-overview .v6-market-name{padding:16px 8px!important}
+}
+@media(min-width:1080px) and (max-width:1179px){
+body>.wrap{margin:0!important;width:100%!important;max-width:none!important}
+body>.wrap>.quick-read{position:static!important;width:auto!important;display:flex!important;flex-direction:row!important;flex-wrap:wrap!important}
+}
+@media(max-width:1079px){
+#v6-intel #v6-overview .v6-overview-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;padding:12px!important}
+#v6-intel #v6-overview .v6-market-name{grid-column:1/-1!important}
+#v6-intel #v6-overview .v6-market-cell{padding:12px!important;min-height:0!important}
+}
+@media(max-width:620px){#v6-intel #v6-overview .v6-overview-row{grid-template-columns:1fr!important}}
+</style></head><body><div class="wrap"><div class="top"><div class="title"><h1>🌍 小语种市场天气看板</h1><p>天气事实 → 中国体感 → 当地生活行动 → 素材机会 → 未来7天</p></div><div class="pill" id="updated">正在更新天气…</div></div>
+<nav class="quick-read" aria-label="页面模块快速导航"><span class="quick-read-label">快速阅读</span><a href="#section-clock">当地时间</a><a href="#section-weather">天气日历</a><a href="#section-map">体感地图</a><a href="#section-compare">九国对标</a><a href="#section-culture">生活文化</a><a href="#v6-intel">市场情报</a><a href="#v6-overview">九国速览</a><a href="#v6-gift-signals-section">礼品线索</a></nav>
+<section class="v5-panel" id="section-clock">
 <h2>🕘 9国当地时间｜模拟钟表实时走动</h2>
 <div class="v5-clocks"><div class="v5-clock-card" data-tz="Europe/Berlin"><div class="v5-clock-title"><b>德国</b><span class="v5flag de"></span></div>
 <div class="v5-clock"><span class="v5tick" style="--i:1"></span><span class="v5tick" style="--i:2"></span><span class="v5tick" style="--i:4"></span><span class="v5tick" style="--i:5"></span><span class="v5tick" style="--i:7"></span><span class="v5tick" style="--i:8"></span><span class="v5tick" style="--i:10"></span><span class="v5tick" style="--i:11"></span><i class="v5n v5n12">12</i><i class="v5n v5n3">3</i><i class="v5n v5n6">6</i><i class="v5n v5n9">9</i>
@@ -707,7 +843,7 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 <span class="v5hand v5hour"></span><span class="v5hand v5minute"></span><span class="v5hand v5second"></span><b class="v5pin"></b></div></div></div>
 </section>
 <section class="v5-panel">
-<h2>🌍 9国今日天气 × 自然月日历｜一屏总览</h2>
+<h2 id="section-weather">🌍 9国今日天气 × 自然月日历｜一屏总览</h2>
 <div class="v5-cal-grid"><div class="v5-cal-card" data-country="德国" data-code="DE" data-lat="52.52" data-lon="13.405" data-tz="Europe/Berlin">
 <div class="v5-cal-head"><strong>德国</strong><span class="v5-month"></span><span class="v5-season"></span><span class="v5-today">天气加载中…</span></div>
 <div class="v5-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
@@ -739,13 +875,13 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 </section>
 
 <div class="grid v5-hidden-overview" id="overview"></div>
-<div class="section card"><h2>🗺️ 欧洲天气 × 中国体感地图</h2>
+<div class="section card"><h2 id="section-map">🗺️ 欧洲天气 × 中国体感地图</h2>
 <div class="realmap-wrap">
   <div id="chinaMap" class="realmap"><div class="china-map-loading">中国体感地图加载中…</div></div>
   <div class="map-note">按当天实时温度、降雨、风感与昼夜温差动态映射中国相近体感区域；天气变化后，国家标签与高亮区域会自动移动。</div>
 </div></div>
-<div class="section card"><h2>📊 9国完整对标表</h2><div class="tablewrap"><table class="tbl"><thead><tr><th>区域/国家</th><th>今日天气</th><th>🇨🇳 中国体感对标</th><th>🧥 穿衣/素材参考</th><th>📈 未来7天</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
-<div class="section"><h2>☕ 当地生活行动 × 文化场景</h2><div class="detail" id="details"></div></div><div class="foot">天气数据：Open-Meteo；文化场景为设计参考，不代表所有当地居民。中国体感对标是用于视觉决策的近似类比。</div></div>
+<div class="section card"><h2 id="section-compare">📊 9国完整对标表</h2><div class="tablewrap"><table class="tbl"><thead><tr><th>区域/国家</th><th>今日天气</th><th>🇨🇳 中国体感对标</th><th>🧥 穿衣/素材参考</th><th>📈 未来7天</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="section"><h2 id="section-culture">☕ 当地生活行动 × 文化场景</h2><div class="detail" id="details"></div></div><div class="foot">天气数据：Open-Meteo；文化场景为设计参考，不代表所有当地居民。中国体感对标是用于视觉决策的近似类比。</div></div>
 <script>
 const places=[
 {r:'北欧',c:'挪威',f:'🇳🇴',lat:59.9139,lon:10.7522,tz:'Europe/Oslo',culture:'秋季常见徒步、桑拿、城市文化活动；风雨天气更强调防风防水与分层穿搭。',scene:'木屋暖光、热饮、羊毛针织、户外徒步、桑拿/冷水体验'},
@@ -984,7 +1120,20 @@ function render(rows){const order=['德国','法国','西班牙','意大利','�
 <div class="fact-ref"><span class="fact-date">📅 ${f.time||'季节参考'}</span><b>${f.title||''}</b><br>${f.note||''}<br>
 <a href="${f.url||'#'}" target="_blank" rel="noopener">🔗 查看事实依据｜${f.source||'官方来源'}</a></div></div>
 ${buildCityStrip(x)}</div>`}).join('')}
-load().catch(e=>{document.getElementById('updated').textContent='天气加载失败，请检查网络';console.error(e)});
+load().catch(e=>{
+ console.error('Weather request failed:',e);
+ const status=document.getElementById('updated');
+ if(status)status.textContent='天气数据暂未连接｜其他模块正常展示';
+ const order=['德国','法国','西班牙','意大利','荷兰','挪威','瑞典','芬兰','波兰'];
+ const table=document.getElementById('tbody');
+ if(table&&!table.children.length){table.innerHTML=places.map(p=>`<tr><td>${p.f||''} ${p.c}</td><td>天气暂不可用</td><td>等待实时天气</td><td>数据恢复后自动展示</td><td>等待更新</td></tr>`).join('');}
+ const details=document.getElementById('details');
+ if(details&&!details.children.length){details.innerHTML=places.map(p=>{
+ const f=localFacts[p.c]||{};
+ const indoors=indoorActionsV55[p.c]||'';
+ return `<div class="card country local-card" style="display:block;padding:20px;margin-bottom:14px"><h3>${p.f||''} ${p.c}｜文化与生活场景</h3><p style="color:#65748a;font-size:13px">天气接口暂不可用，以下为文化参考，不代表今日天气。</p><p><b>🌳 室外行动：</b>${p.culture||'等待实时天气后补充场景建议'}</p><p><b>🏠 室内行动：</b>${indoors}</p><p><b>素材机会：</b>${p.scene||'待结合实时天气判断'}</p><div class="fact-ref"><b>${f.title||''}</b><p>${f.note||''}</p>${f.url?`<a href="${f.url}" target="_blank" rel="noopener">查看事实依据</a>`:''}</div></div>`;
+ }).join('');}
+});
 
 function _ringsFromGeometry(g){
   if(!g)return [];
@@ -1456,4 +1605,229 @@ setTimeout(run,2600);
 })();
 </script>
 
-</body></html>
+<section id="v6-intel"><header class="v6-top"><div><div style="font-size:12px;letter-spacing:1px;color:#b9d2f0">MARKET INTELLIGENCE · V6.0 TEST</div><h2>小语种市场机会情报</h2><p>本国综合新闻 × 搜索趋势 × 竞品商品 × Facebook广告 × 商品机会 × 视觉建议</p></div><span class="v6-status">测试站运行 · 不影响原天气模块</span></header><div class="v6-note">🌍 <strong>V6.0 市场情报测试版｜9国新闻与近期热搜已接入自动更新及中文翻译。</strong>新闻展示九国本国综合事件，不限制礼品行业；热搜为大众近期热搜，并非礼品行业需求指数。新闻标题及搜索词保留当地语言，中文紧贴下方。竞品目前仅提供公开来源入口，Facebook广告尚未接入真实素材；不展示未经验证的销量、广告效果或热度排名。</div><div id="v6-panel-news" class="v6-panel on"></div><div id="v6-panel-trends" class="v6-panel"></div><div id="v6-panel-competitors" class="v6-panel"></div><div id="v6-panel-meta" class="v6-panel"></div><div id="v6-panel-opportunity" class="v6-panel"></div><div id="v6-panel-visual" class="v6-panel"></div></section><style id="v6-compact-css">
+#v6-intel #v6-overview{margin:22px 0 32px}#v6-intel #v6-overview h3{font-size:21px;margin:0 0 5px;color:#1b3c64}
+#v6-intel .v6-overview-header,#v6-intel .v6-overview-row{display:grid;grid-template-columns:120px 1fr 1.05fr 1.2fr 1.2fr;gap:12px;align-items:start}
+#v6-intel .v6-overview-header{background:#e7eef8;color:#31577e;font-weight:700;font-size:13px;border-radius:12px;padding:12px 16px}
+#v6-intel .v6-overview-row{background:#fff;border:1px solid #dfe7f2;border-radius:13px;padding:15px 16px;margin:8px 0;box-shadow:0 3px 12px rgba(20,50,90,.03)}
+#v6-intel .v6-market-name{display:flex;flex-direction:column;gap:5px;color:#234368;font-size:15px}#v6-intel .v6-market-name small{color:#94a3b8;font-size:11px}
+#v6-intel .v6-market-cell{min-width:0;font-size:13px;line-height:1.6}#v6-intel .v6-market-cell a{display:inline-block;margin:0 10px 4px 0;text-decoration:none;color:#24659e;font-weight:600;overflow-wrap:anywhere}#v6-intel .v6-market-cell a:hover{text-decoration:underline}
+#v6-intel .v6-market-cell small{display:block;color:#8b9aad;font-size:11px;margin-top:4px}#v6-intel .v6-market-cell em{display:none;font-size:12px;color:#55718f;font-style:normal;font-weight:700}
+#v6-intel .v6-panel .v6-grid{grid-template-columns:repeat(4,minmax(0,1fr))}#v6-intel .v6-panel .v6-card{min-height:155px}
+@media(max-width:980px){#v6-intel .v6-overview-header{display:none}#v6-intel .v6-overview-row{grid-template-columns:repeat(2,minmax(0,1fr))}#v6-intel .v6-market-name{grid-column:1/-1;flex-direction:row;gap:12px}#v6-intel .v6-market-cell em{display:block}#v6-intel .v6-panel .v6-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){#v6-intel .v6-overview-row{grid-template-columns:1fr}#v6-intel .v6-panel .v6-grid{grid-template-columns:1fr}}
+</style><style id="v604-style">
+#v6-intel .v604-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:20px 0 16px}
+#v6-intel .v604-heading h3{margin:0 0 6px;color:#19395e;font-size:22px}
+#v6-intel .v604-heading p{margin:0;color:#71839b;font-size:13px}
+#v6-intel .v604-state{font-size:11px;white-space:nowrap;background:#e8f1fc;border-radius:30px;padding:8px 12px;color:#315c89}
+#v6-intel .v6-overview-header,#v6-intel .v6-overview-row{grid-template-columns:108px repeat(4,minmax(0,1fr));gap:13px}
+#v6-intel .v6-overview-row{padding:17px 15px;align-items:stretch}
+#v6-intel .v6-market-cell{border-left:1px solid #e9eef5;padding-left:13px;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+#v6-intel .v6-market-cell .v604-mini{color:#8495a9;font-size:11px}
+#v6-intel .v6-market-cell strong{font-size:13px;line-height:1.55;color:#203e61}
+#v6-intel .v6-market-cell p{font-size:12px;line-height:1.6;color:#6e7f94;margin:2px 0 6px;flex:1}
+#v6-intel .v6-market-cell a{font-size:12px;margin-top:auto}
+#v6-intel .v6-panel{margin:28px 0}
+@media(max-width:980px){#v6-intel .v6-overview-row{grid-template-columns:repeat(2,minmax(0,1fr))}#v6-intel .v6-market-cell{border-left:none;padding-left:0;border-top:1px solid #eef1f6;padding-top:10px}}
+@media(max-width:580px){#v6-intel .v6-overview-row{grid-template-columns:1fr}#v6-intel .v604-heading{align-items:flex-start;flex-direction:column}}
+</style><style id="v605-style">
+#v6-intel .v605-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:22px 0 17px}
+#v6-intel .v605-heading h3{font-size:23px;color:#19395e;margin:4px 0 8px}
+#v6-intel .v605-heading p{font-size:13px;color:#70829b;line-height:1.65;margin:0;max-width:860px}
+#v6-intel .v605-kicker{font-size:10px;color:#3b79b2;letter-spacing:1.5px;font-weight:800}
+#v6-intel .v605-state{font-size:11px;white-space:nowrap;background:#fff3df;color:#9b6b25;border-radius:20px;padding:8px 13px}
+#v6-intel .v605-row{transition:border-color .2s,box-shadow .2s}
+#v6-intel .v605-row:hover{border-color:#b4cfe9;box-shadow:0 6px 20px rgba(25,65,110,.08)}
+#v6-intel .v605-mini{font-size:10px;color:#7e96b0;font-weight:700}
+#v6-intel .v605-row .v6-market-cell{gap:6px}
+#v6-intel .v605-row .v6-market-cell p{line-height:1.65;flex:1}
+#v6-intel .v605-link{margin-top:auto!important;font-size:12px!important}
+#v6-intel .v605-section-title{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:26px 0 14px;font-size:20px;color:#1b3e66;border-bottom:1px solid #dce7f2;padding-bottom:12px}
+#v6-intel .v605-section-title small{font-size:11px;color:#8395a9;font-weight:400}
+#v6-intel .v605-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#v6-intel .v605-cards article{background:#fff;border:1px solid #dfe7f2;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;min-height:165px}
+#v6-intel .v605-cards span{color:#7191b0;font-size:11px}
+#v6-intel .v605-cards strong{font-size:16px;color:#1c3d63}
+#v6-intel .v605-cards p{font-size:12px;color:#687c92;line-height:1.75;margin:0;flex:1}
+#v6-intel .v605-cards em{font-size:11px;color:#9b6b25;font-style:normal}
+@media(max-width:900px){#v6-intel .v605-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){#v6-intel .v605-heading{align-items:flex-start;flex-direction:column}#v6-intel .v605-cards{grid-template-columns:1fr}#v6-intel .v605-section-title{align-items:flex-start;flex-direction:column}}
+</style><script id="v6-script">(function(){
+const countries=[["DE", "🇩🇪", "德国", "de", "DE"], ["FR", "🇫🇷", "法国", "fr", "FR"], ["ES", "🇪🇸", "西班牙", "es", "ES"], ["IT", "🇮🇹", "意大利", "it", "IT"], ["NL", "🇳🇱", "荷兰", "nl", "NL"], ["NO", "🇳🇴", "挪威", "no", "NO"], ["SE", "🇸🇪", "瑞典", "sv", "SE"], ["FI", "🇫🇮", "芬兰", "fi", "FI"], ["PL", "🇵🇱", "波兰", "pl", "PL"]],comp={"DE": [["GRAVURZEILE", "https://www.gravurzeile.de/collections/bestseller"], ["CARDORI", "https://cardori.de/collections/bestseller"]], "FR": [["Cadeaux.com", "https://www.cadeaux.com/meilleures-ventes"], ["YourSurprise FR", "https://www.yoursurprise.fr/bestsellers"]], "ES": [["Wanapix", "https://wanapix.es/"], ["Hofmann", "https://www.hofmann.es/tienda/regalos"]], "IT": [["Troppotogo", "https://www.troppotogo.it/regali-personalizzati"]], "NL": [["YourSurprise NL", "https://www.yoursurprise.nl/bestsellers"]], "NO": [["Walseng Design", "https://www.walseng.no/nettbutikk/"], ["PersonligGave", "https://personliggave.com/"]], "SE": [["Smartphoto", "https://www.smartphoto.se/fotopresenter"]], "FI": [["Puuki", "https://www.puuki.fi/pages/personoitu-lahja-isalle"], ["GetPersonal", "https://www.getpersonal.fi/"]], "PL": [["Crazyshop", "https://www.crazyshop.pl/"]]};let selected='DE';
+const safe=(x)=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const card=(label,title,body,link,href)=>`<article class="v6-card"><div class="v6-label">${safe(label)}</div><h3>${safe(title)}</h3><p>${body}</p>${href?`<a href="${safe(href)}" target="_blank" rel="noopener noreferrer">${safe(link)} ↗</a>`:''}</article>`;
+function render(){const c=countries.find(x=>x[0]===selected),name=c[2],lang=c[3],geo=c[4];
+const news=`<p class="v6-sub">${name} · 新闻入口（仅跳转公开新闻搜索，尚未自动筛选和翻译）</p><div class="v6-grid">`+card('本地时事','当地重点新闻','查看与生活方式、消费、家庭及节日相关的新闻。暂不自动推导商品机会。','打开 Google News',`https://news.google.com/search?q=${encodeURIComponent('personalized gifts OR retail OR lifestyle')}&hl=${lang}&gl=${geo}&ceid=${geo}:${lang}`)+card('信息采集','每日新闻摘要','待接入RSS：原文标题、发布时间、中文摘要、来源链接及市场关联度。','查看新闻搜索',`https://news.google.com/?hl=${lang}&gl=${geo}&ceid=${geo}:${lang}`)+card('判断原则','重要 ≠ 商业机会','重大社会新闻可作为文化和消费背景；缺乏商品关联证据时不强行生成销售建议。')+'</div>';
+const trends=`<p class="v6-sub">${name} · Google Trends 来源入口（不显示未取得的热度值）</p><div class="v6-grid">`+card('关键词监测','个性化礼品','以当地语言建立品类、送礼对象、节日、定制工艺四类关键词池。','打开 Google Trends',`https://trends.google.com/trends/explore?geo=${geo}`)+card('短期信号','近期热搜','观察突发需求与季节话题；热搜不等于商品销量。','查看 Trending Now',`https://trends.google.com/trending?geo=${geo}`)+card('待接入字段','7/30/90天对比','关键词、地区、相对搜索指数、变化趋势、采集日期、证据来源；无数据时明确标注待接入。')+'</div>';
+const list=(comp[selected]||[]).map(x=>card('竞品候选 · 待核验抓取',x[0],'关注公开热卖榜、商品定制项、价格、首图和送礼场景。榜单标签不等于实际销量。','访问公开网站',x[1])).join('');
+const competitors=`<p class="v6-sub">${name} · 竞品公开页面（每个站点需单独确认可采集字段及访问规则）</p><div class="v6-grid">${list}</div>`;
+const meta=`<p class="v6-sub">${name} · Meta Ad Library：竞品广告查询入口，非效果排名</p><div class="v6-grid">`+(comp[selected]||[]).map(x=>card('广告素材观察',x[0],'<span class="v6-chip">投放起始时间</span><span class="v6-chip">创意版本</span><span class="v6-chip">商品定制项</span><p>待验证广告主页及素材权限；公开广告通常没有真实CTR、ROAS和订单量。</p>','前往 Meta 广告资料库',`https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=${geo}&q=${encodeURIComponent(x[0])}&search_type=keyword_unordered`)).join('')+'</div>';
+const opportunity=`<p class="v6-sub">${name} · 机会池模板（暂无足够证据生成真实机会排名）</p><div class="v6-grid">`+card('需求证据','搜索趋势','记录关键词、时间窗口、当地语言、变化幅度与数据来源；缺失时不评分。')+card('商品证据','竞品公开热卖','记录商品链接、公开榜单位置、售价、定制方式及历史变化。')+card('广告证据','Facebook 竞品广告','记录广告链接、投放国家、创意变化及持续观察日期；不把投放时长等同效果。')+card('最终决策','商品机会分级','综合多源证据后建议：开发新品 / 优化SKU / 测试素材 / 持续观察。')+'</div>';
+const visual=`<p class="v6-sub">${name} · 设计建议框架（通用方法，尚非该国实时市场结论）</p><div class="v6-grid">`+card('品类设计','商品图策略','首图识别商品与定制卖点；补充工艺、材质、佩戴或使用场景及礼物包装。')+card('营销设计','广告视觉策略','基于当地语言和送礼场景，突出单一核心卖点，避免堆叠信息。')+card('视频设计','15秒创意框架','第1秒停滑、第2秒看懂、第3秒促点击；后续突出定制细节、使用场景和情感价值。')+card('验证方式','对照真实数据','形成首帧A/B测试假设；待后续接入内部CTR、加购率等数据验证，不预判爆款。')+'</div>';
+const vals={news,trends,competitors,meta,opportunity,visual};for(const k in vals)document.getElementById('v6-panel-'+k).innerHTML=vals[k];}
+
+const panelNames=['news','trends','competitors','meta','opportunity','visual'];
+selected='DE';render();
+const saved={opportunity:document.getElementById('v6-panel-opportunity').innerHTML,visual:document.getElementById('v6-panel-visual').innerHTML};
+const marketFocus={
+DE:['德国综合新闻与本国事件','personalisierte Geschenke','雕刻礼品、定制首饰','定制工艺特写与佩戴场景'],
+FR:['法国综合新闻与本国事件','cadeau personnalisé','家庭纪念、照片礼品','送礼惊喜与生活化佩戴'],
+ES:['西班牙综合新闻与本国事件','regalos personalizados','照片定制、家居礼品','鲜明主体与生活场景'],
+IT:['意大利综合新闻与本国事件','regali personalizzati','家居礼品、趣味定制','材质质感与送礼仪式'],
+NL:['荷兰综合新闻与本国事件','gepersonaliseerd cadeau','照片礼品、实用定制','使用场景与定制细节'],
+NO:['挪威综合新闻与本国事件','personlig gave','雕刻木制、户外礼物','真实材质与户外使用'],
+SE:['瑞典综合新闻与本国事件','personlig present','照片礼品、居家纪念','自然光与温暖家居'],
+FI:['芬兰综合新闻与本国事件','personoitu lahja','雕刻礼品、户外用品','实用细节与木质质感'],
+PL:['波兰综合新闻与本国事件','prezent personalizowany','相册、抱枕、家庭礼品','定制细节与礼物包装']};
+const href=(u,t)=>`<a class="v605-link" target="_blank" rel="noopener noreferrer" href="${safe(u)}">${safe(t)} ↗</a>`;
+const overview=document.createElement('div');overview.id='v6-overview';
+overview.innerHTML='<div class="v605-heading"><div><div class="v605-kicker">MARKET INTELLIGENCE · NINE COUNTRIES</div><h3>🌍 9国市场情报速览</h3><p>每个国家直接展示四项内容提要。先看信息，再点击来源深入了解；新闻与热搜每日自动更新；新闻覆盖本国政治、经济、社会、文化及重大事件，本国热点候选优先，搜索趋势为综合热搜，竞品和广告不代表销量或投放成绩。</p></div><span class="v605-state">结构预览 · 数据待接入</span></div><div class="v6-overview-header"><span>国家</span><span>📰 每日新闻</span><span>📈 搜索趋势</span><span>🛍️ 竞品商品</span><span>🎬 Facebook 广告</span></div>';
+for(const c of countries){
+ const [code,flag,name,lang,geo]=c,shops=comp[code]||[],f=marketFocus[code];
+ const news=`https://news.google.com/search?q=${encodeURIComponent(name)}&hl=${lang}&gl=${geo}&ceid=${geo}:${lang}`;
+ const trend=`https://trends.google.com/trends/explore?geo=${geo}&q=${encodeURIComponent(f[1])}`;
+ const ads=`https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=${geo}&q=${encodeURIComponent(shops[0]?.[0]||'personalized gifts')}&search_type=keyword_unordered`;
+ const shop=shops[0];
+ const keywordFallback={
+ DE:[['首饰','personalisierter Schmuck'],['围巾','personalisierter Schal'],['小夜灯','personalisiertes Nachtlicht']],
+ FR:[['首饰','bijoux personnalisés'],['围巾','écharpe personnalisée'],['小夜灯','veilleuse personnalisée']],
+ ES:[['首饰','joyas personalizadas'],['围巾','bufanda personalizada'],['小夜灯','luz nocturna personalizada']],
+ IT:[['首饰','gioielli personalizzati'],['围巾','sciarpa personalizzata'],['小夜灯','luce notturna personalizzata']],
+ NL:[['首饰','gepersonaliseerde sieraden'],['围巾','gepersonaliseerde sjaal'],['小夜灯','gepersonaliseerd nachtlampje']],
+ NO:[['首饰','personlige smykker'],['围巾','personlig skjerf'],['小夜灯','personlig nattlampe']],
+ SE:[['首饰','personliga smycken'],['围巾','personlig halsduk'],['小夜灯','personlig nattlampa']],
+ FI:[['首饰','personoidut korut'],['围巾','personoitu huivi'],['小夜灯','personoitu yövalo']],
+ PL:[['首饰','biżuteria personalizowana'],['围巾','szalik personalizowany'],['小夜灯','lampka nocna personalizowana']]
+ };
+ const keywordHTML=(keywordFallback[code]||[]).map(([category,keyword])=>'<div class="v6-category-chip"><strong>'+safe(category+' · '+keyword)+'</strong><small>Callie商品方向 · 待核实趋势指数</small><a target="_blank" rel="noopener noreferrer" href="https://trends.google.com/trends/explore?geo='+encodeURIComponent(geo)+'&q='+encodeURIComponent(keyword)+'">查看趋势 ↗</a></div>').join('');
+ overview.insertAdjacentHTML('beforeend',`<article class="v6-overview-row v605-row">
+ <div class="v6-market-name"><b><img class="v6-country-flag" src="https://flagcdn.com/${code.toLowerCase()}.svg" alt="${safe(name)}国旗" width="22" height="17" loading="eager" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="v6-flag-fallback" style="display:none">${flag}</span>> ${name}</b><small>${code} · ${safe(({DE:"Deutschland",FR:"France",ES:"España",IT:"Italia",NL:"Nederland",NO:"Norge",SE:"Sverige",FI:"Suomi",PL:"Polska"})[code])}</small></div>
+ <div class="v6-market-cell"><em>📰 新闻</em><div class="v605-mini">本国综合新闻（非礼品专题）</div><strong>${safe(f[0])}</strong><p>关注本国政治、经济、社会、文化、天气及重大突发事件。真实标题、时间与中文翻译由每日采集提供。</p>${href(news,'阅读新闻')}</div>
+ <div class="v6-market-cell"><em>📈 趋势</em><div class="v605-mini">本地语言关键词</div><div class="v6-category-keyword-list">${keywordHTML}</div></div>
+ <div class="v6-market-cell"><em>🛍️ 竞品</em><div class="v605-mini">重点观察品类</div><strong>${safe(f[2])}</strong><p>候选来源：${safe(shops.map(x=>x[0]).join('、')||'待补充')}。榜单与价格待核验。</p>${shop?href(shop[1],'查看商品'):''}</div>
+ <div class="v6-market-cell"><em>🎬 广告</em><div class="v605-mini">Meta 广告研究 · 竞品检索</div><p>公开广告资料库入口；素材及互动尚未采集。</p><div class="v6-ad-static">${shops.slice(0,3).map(([brand])=>'<div class="v6-live-item"><strong>'+safe(brand)+'</strong><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/ads/library/?active_status=all&amp;ad_type=all&amp;country='+encodeURIComponent(geo)+'&amp;q='+encodeURIComponent(brand)+'&amp;search_type=keyword_unordered">查看公开广告 ↗</a></div>').join('')}</div></div>
+ </article>`);
+}
+document.querySelector('#v6-intel .v6-note').insertAdjacentElement('afterend',overview);
+for(const k of ['news','trends','competitors','meta'])document.getElementById('v6-panel-'+k).remove();
+document.getElementById('v6-panel-opportunity').innerHTML=`<h3 class="v605-section-title">💡 重点商品机会观察 <small>需真实数据验证</small></h3><div class="v605-cards"><article><span>01 · 德国 / 法国</span><strong>名字与纪念定制首饰</strong><p>验证刻字、名字和生辰花等定制需求，对照当地搜索趋势和竞品公开榜单。</p><em>待验证机会</em></article><article><span>02 · 法国 / 西班牙 / 荷兰</span><strong>照片与家庭情感礼品</strong><p>研究照片定制、相册和家居礼品，重点观察送礼情绪与真实使用场景。</p><em>待验证机会</em></article><article><span>03 · 北欧 / 波兰</span><strong>实用型个性化礼物</strong><p>关注木制、户外和居家用品，区分文化契合度与真实热卖证据。</p><em>待验证机会</em></article></div>`;
+document.getElementById('v6-panel-visual').innerHTML=`<h3 class="v605-section-title">🎨 视觉策略与测试建议 <small>设计方向示例</small></h3><div class="v605-cards"><article><span>品类设计</span><strong>商品图结构</strong><p>首图交代商品和定制项；后续补充工艺、材质、佩戴或使用场景，不只关注首图。</p></article><article><span>营销设计</span><strong>广告图表达</strong><p>突出单一核心卖点，结合当地节日及生活场景，减少画面信息堆叠。</p></article><article><span>视频设计</span><strong>15秒素材框架</strong><p>第1秒停滑、第2秒看懂、第3秒促点击；后续展示定制、使用及情感价值。</p></article></div>`;
+})();</script><style id="v6-live-style">
+#v6-intel .v6-live-summary{display:block;font-size:12px;line-height:1.55;margin:4px 0 8px;color:#61768c}
+#v6-intel .v6-live-item{display:block;margin:6px 0 8px;padding-bottom:8px;border-bottom:1px dashed #e3eaf3}
+#v6-intel .v6-live-item:last-child{border-bottom:0}
+#v6-intel .v6-live-item strong{display:block;font-size:12px;line-height:1.5}
+#v6-intel .v6-live-item small{display:block;font-size:10px;color:#8494a7;margin-top:2px}
+#v6-intel .v6-live-item a{display:inline-block;margin-top:4px;font-size:11px}
+#v6-intel .v6-data-notice{padding:10px 13px;border-radius:10px;background:#edf5fc;color:#3b6589;font-size:12px;margin:10px 0}
+#v6-intel .v6-translation{font-size:11px;line-height:1.6;color:#687e96;margin:1px 0 3px;overflow-wrap:anywhere}
+</style>
+<script id="v6-live-loader">(function(){
+const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeURL=x=>{try{const u=new URL(x,location.href);return ['https:','http:'].includes(u.protocol)?u.href:'#'}catch(e){return '#'}};
+const fmt=x=>x?new Date(x).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'时间未知';
+const root=document.getElementById('v6-overview');if(!root)return;
+const rows=[...root.querySelectorAll('.v6-overview-row')];
+const status=root.querySelector('.v605-state');
+const show=(cell,kind,items,stamp)=>{
+ const label=cell.querySelector('.v605-mini');if(label)label.textContent=kind;
+ const strong=cell.querySelector('strong');if(strong)strong.remove();
+ const p=cell.querySelector('p');if(p)p.remove();
+ const entries=(items||[]).slice(0,kind==='竞品公开商品线索'?8:3);
+ if(!entries.length){cell.insertAdjacentHTML('beforeend','<p class="v6-live-summary">该来源暂未返回可验证的数据，保留来源入口。</p>');return}
+ const frag=document.createElement('div');
+ for(const x of entries){const item=document.createElement('div');item.className='v6-live-item';
+  const heading=document.createElement('strong');heading.textContent=x.title||x.name||'未命名';item.appendChild(heading);if(x.image&&kind==='竞品公开商品线索'){try{const imgUrl=new URL(x.image);if(imgUrl.protocol==='https:'){const pic=document.createElement('img');pic.src=imgUrl.href;pic.alt=x.title||'竞品商品';pic.loading='lazy';pic.style.cssText='max-width:100%;max-height:120px;object-fit:contain;display:block;margin:5px 0';pic.onerror=()=>{pic.remove();const unavailable=document.createElement('small');unavailable.textContent='商品图片暂不可访问 · 可查看官网原图';item.appendChild(unavailable)};item.appendChild(pic)}}catch(e){}}if(x.price){const price=document.createElement('div');price.className='v6-translation';price.textContent='公开标价：'+x.price+' '+(x.currency||'');item.appendChild(price)}
+  if(x.title_zh){const translation=document.createElement('div');translation.className='v6-translation';translation.textContent=x.title_zh;item.appendChild(translation)}
+  const meta=document.createElement('small');meta.textContent=[x.scope||'',x.source,x.published?fmt(x.published):'',x.signal||''].filter(Boolean).join(' · ');item.appendChild(meta);
+  if(x.summary){const summary=document.createElement('div');summary.className='v6-live-summary';summary.textContent=x.summary;item.appendChild(summary)}
+  if(x.url&&safeURL(x.url)!=='#'){const a=document.createElement('a');a.href=safeURL(x.url);a.target='_blank';a.rel='noopener noreferrer';a.textContent='查看详情 ↗';item.appendChild(a)}
+  frag.appendChild(item)
+ }
+ cell.appendChild(frag)
+};
+fetch('./data/market.json?ts='+Math.floor(Date.now()/1800000),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{
+ if(!data.updated_at)throw Error('missing timestamp');
+ const age=(Date.now()-Date.parse(data.updated_at))/3600000;
+ status.textContent=(age>36?'⚠ 数据较旧 · ':'● 情报已同步 · ')+fmt(data.updated_at)+'（北京时间）';
+ rows.forEach((row,i)=>{const key=['DE','FR','ES','IT','NL','NO','SE','FI','PL'][i];const v=data.countries?.[key]||{};const cells=row.querySelectorAll('.v6-market-cell');
+ show(cells[0],'本国热点优先 · 当地媒体补充',v.news,data.updated_at);
+ if((v.category_signals||[]).length){const cell=cells[1];const label=cell.querySelector('.v605-mini');if(label)label.textContent='Callie商品方向 · 当地关键词（非热度排名）';const old=cell.querySelector('strong');if(old)old.remove();const oldP=cell.querySelector('p');if(oldP)oldP.remove();const prior=cell.querySelector('.v6-category-keyword-list');if(prior)prior.remove();const wrap=document.createElement('div');wrap.className='v6-category-keyword-list';for(const s of v.category_signals.slice(0,10)){const el=document.createElement('div');el.className='v6-category-chip';const title=document.createElement('strong');title.textContent=s.category+' · '+s.keyword;el.appendChild(title);const note=document.createElement('small');note.textContent='Callie商品方向候选 · 未获取搜索指数';el.appendChild(note);if(s.url&&safeURL(s.url)!=='#'){const link=document.createElement('a');link.href=safeURL(s.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='查看当地趋势 ↗';el.appendChild(link)}wrap.appendChild(el)}cell.appendChild(wrap)}else{const label=cells[1].querySelector('.v605-mini');if(label)label.textContent='Callie商品关键词 · 查看当地趋势';}
+ show(cells[2],'竞品公开商品线索',(v.products||[]).filter(x=>x.verified_public_product&&x.image).length?(v.products||[]).filter(x=>x.verified_public_product&&x.image):v.products,data.updated_at);
+ const adCell=cells[3];
+ const ads=(v.ads||[]).filter(x=>x.record_type==='verified_ad'&&x.url&&safeURL(x.url)!=='#');
+ const label=adCell.querySelector('.v605-mini');if(label)label.textContent=ads.length?'Meta 广告 · 已核实记录与公开查询':'Meta 广告 · 公开查询';
+ const oldTitle=adCell.querySelector('strong');if(oldTitle)oldTitle.remove();
+ const intro=adCell.querySelector('p');if(intro)intro.remove();
+ const staticAds=adCell.querySelector('.v6-ad-static');if(staticAds)staticAds.remove();
+ const note=document.createElement('p');note.className='v6-live-summary';
+ note.textContent=ads.length?'已取得 '+ads.length+' 条官方广告记录；媒体无法直接获取时可打开原始广告快照。下方同时保留品类和品牌查询入口。':'暂未取得可核实的广告素材；保留各品类及品牌的 Meta 广告资料库入口，不使用商品图片冒充广告。';
+ adCell.appendChild(note);
+ for(const ad of ads.slice(0,6)){
+  const item=document.createElement('div');item.className='v6-live-item';
+  const title=document.createElement('strong');title.textContent='已核实广告 · '+(ad.brand||ad.title||'Meta 广告');item.appendChild(title);
+  if(ad.image&&safeURL(ad.image)!=='#'){
+   const img=document.createElement('img');img.src=safeURL(ad.image);img.alt='公开广告素材';img.loading='lazy';img.style.cssText='max-width:100%;max-height:170px;object-fit:contain;display:block;margin:6px 0';img.onerror=()=>img.remove();item.appendChild(img)
+  }
+  if(ad.video&&safeURL(ad.video)!=='#'){
+   const video=document.createElement('video');video.src=safeURL(ad.video);video.controls=true;video.preload='none';video.style.cssText='max-width:100%;max-height:200px;display:block;margin:6px 0';item.appendChild(video)
+  }
+  const detail=document.createElement('small');detail.textContent=[ad.started_at?'开始投放 '+ad.started_at:'',ad.media_status||''].filter(Boolean).join(' · ');item.appendChild(detail);
+  const link=document.createElement('a');link.href=safeURL(ad.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='查看原始广告 ↗';item.appendChild(link);adCell.appendChild(item)
+ }
+ const brands=(v.ad_searches||[]).length?v.ad_searches:({DE:['GRAVURZEILE','CARDORI'],FR:['Cadeaux.com','YourSurprise'],ES:['Wanapix','Hofmann'],IT:['Troppotogo'],NL:['YourSurprise'],NO:['Walseng Design','PersonligGave'],SE:['Smartphoto'],FI:['Puuki','GetPersonal'],PL:['Crazyshop']}[key]||[]).map(brand=>({brand,url:'https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country='+key+'&q='+encodeURIComponent(brand)+'&search_type=keyword_unordered'}));
+ for(const b of [...brands.filter(x=>x.category==='Callie同类商品'),...brands.filter(x=>x.category!=='Callie同类商品')].slice(0,6)){
+  const line=document.createElement('div');line.className='v6-live-item';const title=document.createElement('strong');
+  title.textContent=(b.category==='Callie同类商品'?'品类 · ':'竞品 · ')+b.brand+' · 公开广告查询';line.appendChild(title);
+  if(b.url&&safeURL(b.url)!=='#'){const link=document.createElement('a');link.href=safeURL(b.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='打开广告资料库 ↗';line.appendChild(link)}adCell.appendChild(line)
+ }
+ const info=document.createElement('small');info.textContent='仅展示已核实广告及公开查询链接；没有可验证的数据不显示效果数字。';adCell.appendChild(info);
+ });
+ }).catch(err=>{status.textContent='○ 暂未读取到最新情报 · 当前展示的是静态说明，并非当日新闻；请检查数据连接';console.warn('V6 market feed unavailable:',err.message)})
+})();</script><style id="v6-gift-signal-style">
+#v6-intel .v6-gift-heading{margin:24px 0 10px;color:#19395e;font-size:19px}
+#v6-intel .v6-gift-sub{font-size:12px;color:#697f99;margin:0 0 14px}
+#v6-intel .v6-gift-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#v6-intel .v6-gift-card{background:#fff;border:1px solid #dfe7f2;border-radius:12px;padding:14px;font-size:12px}
+#v6-intel .v6-gift-card h4{margin:0 0 10px;color:#1d436c;font-size:14px}
+#v6-intel .v6-gift-card p{margin:5px 0;color:#6a7c90;line-height:1.5}
+#v6-intel .v6-gift-card a{color:#24659e;overflow-wrap:anywhere}
+#v6-intel .v6-gift-card .v6-gift-item{padding:9px 0;border-top:1px dashed #e3eaf3}
+@media(max-width:850px){#v6-intel .v6-gift-grid{grid-template-columns:1fr}}
+</style>
+<script id="v6-gift-signals">
+(function(){
+const codes=[['DE','德国'],['FR','法国'],['ES','西班牙'],['IT','意大利'],['NL','荷兰'],['NO','挪威'],['SE','瑞典'],['FI','芬兰'],['PL','波兰']];
+const section=document.getElementById('v6-intel'), anchor=document.getElementById('v6-panel-opportunity');
+if(!section||!anchor)return;
+const wrap=document.createElement('section');wrap.id='v6-gift-signals-section';
+const heading=document.createElement('h3');heading.className='v6-gift-heading';heading.textContent='🎁 九国个性化礼品行业线索';
+const desc=document.createElement('p');desc.className='v6-gift-sub';desc.textContent='自动搜索当地语言的个性化礼品相关新闻。仅表示公开新闻匹配，不代表搜索量、购买需求、销量或增长。';
+const grid=document.createElement('div');grid.className='v6-gift-grid';
+wrap.append(heading,desc,grid);anchor.parentNode.insertBefore(wrap,anchor);
+function el(tag,txt){const e=document.createElement(tag);e.textContent=txt||'';return e}
+fetch('./data/market.json?gift='+Math.floor(Date.now()/1800000),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data unavailable');return r.json()}).then(data=>{
+for(const [code,name] of codes){
+const card=el('article');card.className='v6-gift-card';card.appendChild(el('h4',name+' · 行业线索'));
+const c=data.countries?.[code]||{},items=(c.gift_signals||[]).slice(0,3);
+if(!items.length)card.appendChild(el('p','暂未获取到可验证的行业新闻，不代表没有市场需求。'));
+for(const item of items){
+const line=el('div');line.className='v6-gift-item';
+const title=el('div',item.title);title.style.fontWeight='600';line.appendChild(title);
+if(item.title_zh)line.appendChild(el('p',item.title_zh));
+const source=el('p',[item.source,item.published?new Date(item.published).toLocaleDateString('zh-CN'):''].filter(Boolean).join(' · '));line.appendChild(source);
+try{const url=new URL(item.url);if(url.protocol==='https:'){const a=el('a','查看原始报道 ↗');a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';line.appendChild(a)}}catch(e){}
+card.appendChild(line)
+}
+grid.appendChild(card)
+}
+}).catch(()=>{grid.appendChild(el('p','行业线索暂未加载，请查看最近一次 GitHub Actions 运行状态。'))})
+})();
+</script><style id="v6-category-style">
+#v6-intel .v6-category-chip{display:block;padding:7px 0;border-bottom:1px dashed #e2e9f1}
+#v6-intel .v6-category-chip strong{font-size:12px;display:block;color:#1d4267}
+#v6-intel .v6-category-chip small{font-size:10px;color:#71849b;display:block}
+#v6-intel .v6-category-chip a{font-size:11px}
+#v6-intel .v6-image-unavailable{border:1px dashed #d1ddeb;border-radius:8px;padding:12px 7px;color:#8192a5;font-size:11px;text-align:center;margin:8px 0;background:#f8fafc}
+</style><style id="v6-real-flags">#v6-intel .v6-market-name b{display:flex;align-items:center;gap:6px;white-space:nowrap}#v6-intel .v6-country-flag{width:22px;height:17px;object-fit:cover;border-radius:2px;flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.1)}</style></body></html>
