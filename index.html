@@ -2037,4 +2037,33 @@ if(window.innerWidth>=1180){
 }
 update();
 })();
+</script><script id="v6-news-translation-inline-fallback">
+/* Display verified Chinese titles even when the published JSON lags behind the repo. */
+(function(){
+const embedded={"DE|Proteste von Gen Z regelt: Festnahmen nach Ausschreitungen im Anschluss an friedliche Proteste - DIE ZEIT":"“Z世代掌权”抗议活动：和平示威后发生骚乱，多人被捕","DE|\"Gen-Z-regelt\"-Demo: Ausschreitungen in Hamburg - NDR.de":"“Z世代掌权”示威：汉堡发生骚乱","DE|Schülerproteste in Berlin: Radikale Gruppen übernehmen, Lage eskaliert - Euronews.com":"柏林学生抗议：激进团体介入，局势升级","FR|Paris, Marseille : soirée sous haute tension - 31/10 - BFM":"巴黎、马赛：局势紧张的夜晚（10月31日）","FR|Nouvelle-Zélande – France – 31 octobre 2026 - - Fédération Française de Rugby - FFR":"新西兰对阵法国：2026年10月31日橄榄球比赛","FR|\"On va continuer à être dans la rue\" : à Marseille, un cortège non déclaré rassemble environ 10 000 personnes lors de la mobilisation du 31 octobre - franceinfo":"马赛10月31日动员活动：约1万人参加未经申报的游行，参与者称将继续上街","ES|Gran recibimiento al Real Madrid en Santander - Real Madrid CF | Web Oficial":"皇家马德里抵达桑坦德，受到热烈欢迎","ES|FC Barcelona 6-1 Deportivo Alavés: resumen, resultado y goles del partido de la jornada 11 de LaLiga - Cadena SER":"巴塞罗那6比1阿拉维斯：西甲第11轮比赛回顾、赛果与进球","ES|El Barça recupera su mejor versión con una goleada ante el Alavés para seguir al frente de la Liga - RTVE.es":"巴萨大胜阿拉维斯，找回最佳状态并继续领跑联赛","IT|Udinese-Roma 2-5, la sintesi della partita - RaiNews":"乌迪内斯2比5罗马：比赛集锦","IT|Sciopero generale 20 novembre 2026 - CGIL Milano":"2026年11月20日全国总罢工——米兰总工会","IT|Le parole di Gasperini dopo Udinese-Roma - AS Roma":"加斯佩里尼在乌迪内斯对阵罗马赛后的发言","NL|Vooral minderjarigen aangehouden in Den Haag, grote incidenten uitgebleven - NOS":"海牙被捕人员主要为未成年人，未发生重大事件","NL|Tientallen aanhoudingen verricht bij onrust in Den Haag, merendeel minderjarig - NU":"海牙骚乱中数十人被捕，多数为未成年人","NL|ADO-fan probeert stad te beschermen tegen relschoppers: ‘Den Haag is geen Parijs!’ - De Telegraaf":"ADO球迷试图保护城市免遭骚乱者破坏：‘海牙不是巴黎！’","NO|Bergen: To menn til legevakt etter fallulykke – Siste nytt - NRK":"卑尔根：两名男子坠落事故后被送往急诊","NO|Person omkom på treningssenter i Oslo: - Undersøker mulig teknisk feil - Dagbladet":"奥斯陆健身中心有人死亡：警方调查可能的技术故障","NO|Mann døde på treningssenter i Oslo – politiet undersøker - Aftenposten":"一名男子在奥斯陆健身中心死亡，警方正在调查","SE|Ishockey: Euro hockey tour, damer – Sverige-Finland - SVT Play":"女子冰球欧洲巡回赛：瑞典对芬兰","SE|Ishockey: Malmö – HV71 0 – 0 – Senaste nytt från SHL - SVT Nyheter":"冰球：马尔默对阵HV71，比分0比0——瑞典冰球联赛最新消息","SE|Bedrägerivåg mot äldre kvinnor i Stockholm - Svenska Dagbladet":"斯德哥尔摩出现针对老年女性的诈骗浪潮","FI|Kolumni | Suomi ei onnistunut päihittämään möhköfanttia ajoissa - HS.fi":"专栏：芬兰未能及时战胜‘庞然大物’","FI|Hahmo paljastui kesken Masked Singer Suomi -lähetyksen: ”Olen pahoillani” - Iltalehti":"《芬兰蒙面歌王》直播中一名角色身份揭晓：‘我很抱歉’","FI|SDP:n Räsänen: Ei kai hallitus pyri johtamaan komissiota harhaan? - Sosialidemokraatit":"社民党拉萨宁质疑：政府难道试图误导欧盟委员会？","PL|[SKRÓT] Lech Poznań 3:1 Wisła Kraków: „Piątka” Kolejorza - Ekstraklasa":"比赛集锦：波兹南莱赫3比1克拉科夫维斯瓦，莱赫队攻入三球","PL|Lech Poznań – Wisła Kraków. Hit PKO BP Ekstraklasy w TVP! - sport.tvp.pl":"波兹南莱赫对阵克拉科夫维斯瓦：波兰顶级联赛焦点战将在TVP播出","PL|Skład Lecha Poznań na mecz z Wisłą Kraków - Lech Poznań":"波兹南莱赫对阵克拉科夫维斯瓦的比赛阵容"};
+const dictionary=Object.create(null);
+for(const [key,value] of Object.entries(embedded)){const p=key.indexOf('|');if(p>0&&value)dictionary[key.slice(p+1).trim()]=value}
+const rowCountries=['DE','FR','ES','IT','NL','NO','SE','FI','PL'];
+function repair(){
+ const rows=document.querySelectorAll('#v6-overview .v6-overview-row');
+ rows.forEach((row,i)=>{
+ const first=row.querySelector('.v6-market-cell');if(!first)return;
+ const items=first.querySelectorAll('.v6-live-item');
+ const names=Object.keys(embedded).filter(k=>k.startsWith(rowCountries[i]+'|'));
+ items.forEach((item,j)=>{
+  const heading=item.querySelector('strong');if(!heading)return;
+  const translation=dictionary[heading.textContent.trim()]|| (names[j]?embedded[names[j]]:null);
+  if(!translation||item.querySelector('.v6-translation'))return;
+  const node=document.createElement('div');node.className='v6-translation';node.textContent=translation;
+  node.style.cssText='color:#496b92;font-size:12px;line-height:1.65;margin:5px 0 7px;';
+  heading.insertAdjacentElement('afterend',node);
+ });
+ });
+}
+let scheduled=false;
+const observer=new MutationObserver(()=>{if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;repair()},100)});
+observer.observe(document.getElementById('v6-overview')||document.body,{subtree:true,childList:true});
+repair();
+setTimeout(repair,700);setTimeout(repair,2200);
+})();
 </script></body></html>
