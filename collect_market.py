@@ -47,15 +47,24 @@ def readfeed(url,limit=3):
 def translate_zh(text,lang,cache):
  if not text:return ''
  key=lang+'|'+text
- if key in cache:return cache[key]
+ if cache.get(key):return cache[key]
+ # Two independent best-effort services; do not invent a translation when both fail.
  try:
   query=urllib.parse.urlencode({'client':'gtx','sl':lang,'tl':'zh-CN','dt':'t','q':text})
   req=urllib.request.Request('https://translate.googleapis.com/translate_a/single?'+query,headers={'User-Agent':'Mozilla/5.0'})
-  with urllib.request.urlopen(req,timeout=10) as r:data=json.loads(r.read(200000).decode('utf-8'))
+  with urllib.request.urlopen(req,timeout=8) as r:data=json.loads(r.read(200000).decode('utf-8'))
   result=''.join(str(x[0] or '') for x in data[0] if isinstance(x,list))
   if result and result.strip().casefold()!=text.strip().casefold():
    cache[key]=result.strip();return cache[key]
- except Exception as exc:print('Translation unavailable:',lang,str(exc)[:100])
+ except Exception as exc:print('Google translation unavailable:',lang,str(exc)[:100])
+ try:
+  query=urllib.parse.urlencode({'q':text[:450],'langpair':lang+'|zh-CN'})
+  req=urllib.request.Request('https://api.mymemory.translated.net/get?'+query,headers={'User-Agent':'Mozilla/5.0'})
+  with urllib.request.urlopen(req,timeout=7) as r:data=json.loads(r.read(200000).decode('utf-8'))
+  result=html.unescape(str(data.get('responseData',{}).get('translatedText') or '')).strip()
+  if result and result.casefold()!=text.strip().casefold() and not result.upper().startswith('MYMEMORY WARNING'):
+   cache[key]=result;return result
+ except Exception as exc:print('Fallback translation unavailable:',lang,str(exc)[:100])
  return ''
 
 
