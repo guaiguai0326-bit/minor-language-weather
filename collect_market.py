@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Public RSS data collector. No login, scraping or fabricated scores."""
 import os
+import html
 import json, re, time, urllib.request, urllib.parse, xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import datetime, timezone
