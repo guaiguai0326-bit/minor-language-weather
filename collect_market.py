@@ -320,6 +320,16 @@ if path.exists():
  try:previous=json.loads(path.read_text(encoding='utf-8')).get('countries',{})
  except Exception:pass
 cache={}
+# Editorial translations remain available when external translation APIs are unreachable.
+seed_path=ROOT/'data/news_translation_seed.json'
+if seed_path.exists():
+ try:
+  seeds=json.loads(seed_path.read_text(encoding='utf-8'))
+  for key,value in seeds.items():
+   code,title=key.split('|',1)
+   if code in COUNTRIES and value:
+    cache[COUNTRIES[code][0]+'|'+title]=value
+ except Exception as exc:print('Editorial translation cache unavailable:',str(exc)[:100])
 for country_code,old_items in previous.items():
  lang=COUNTRIES.get(country_code,('auto',))[0]
  for group in ('news','trending'):
