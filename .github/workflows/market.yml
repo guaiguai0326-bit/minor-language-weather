@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'collect_market.py'
+      - 'data/news_translation_seed.json'
       - '.github/workflows/market.yml'
   schedule:
     - cron: '0 0 * * *'
@@ -28,11 +29,13 @@ jobs:
         run: python collect_market.py
       - name: Commit fresh data if changed
         shell: bash
+        env:
+          META_AD_LIBRARY_ACCESS_TOKEN: ${{ secrets.META_AD_LIBRARY_ACCESS_TOKEN }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/market.json
+          git add data/market.json data/market_snapshot.js
           if git diff --cached --quiet; then
             echo "No market data changes."
             exit 0
@@ -51,7 +54,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python collect_market.py
-            git add data/market.json
+            git add data/market.json data/market_snapshot.js
             if git diff --cached --quiet; then
               echo "Latest remote already has the same data."
               exit 0

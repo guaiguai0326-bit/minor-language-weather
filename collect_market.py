@@ -110,7 +110,7 @@ def retailer_products(shop_name, landing, max_items=2):
       pic=node.get('image') or ''
       if isinstance(pic,list):pic=pic[0] if pic else ''
       if isinstance(pic,dict):pic=pic.get('url','')
-      pic=urllib.parse.urljoin(resolved,pic) if isinstance(pic,str) else ''
+      pic=urllib.parse.urljoin(resolved,pic.strip()) if isinstance(pic,str) and pic.strip() else ''
       found.append({'name':shop_name,'title':name,'url':link,'source':shop_name+' · 官网结构化商品数据','price':str(price) if price is not None else '','currency':str(currency),'image':pic if pic.startswith('https://') else '','summary':'官网公开商品信息；不代表销量或热卖排名。','verified_public_product':True})
     for key,value in node.items():
      if isinstance(value,(dict,list)):walk(value)
@@ -270,7 +270,7 @@ def html_product_metadata(shop_name,url):
   kind=(m.get('og:type') or '').lower()
   name=(m.get('og:title') or m.get('twitter:title') or '').strip()
   image=(m.get('og:image:secure_url') or m.get('og:image') or m.get('twitter:image') or '').strip()
-  image=urllib.parse.urljoin(final,image)
+  image=urllib.parse.urljoin(final,image) if image else ''
   price=(m.get('product:price:amount') or m.get('og:price:amount') or m.get('product:sale_price:amount') or '').strip()
   currency=(m.get('product:price:currency') or m.get('og:price:currency') or '').strip()
   path=urllib.parse.urlparse(final).path.lower()
@@ -305,14 +305,17 @@ def category_signals(code,lang,geo):
 
 def fetch_meta_ads(brand,country):
  token=os.environ.get('META_AD_LIBRARY_ACCESS_TOKEN','').strip()
- if not token:return []
+ if not token:return [],'missing_token'
  params={'access_token':token,'ad_reached_countries':json.dumps([country]),'search_terms':brand,'ad_type':'ALL','ad_active_status':'ALL','limit':3,'fields':'id,page_name,ad_delivery_start_time,ad_snapshot_url,ad_creative_bodies,ad_creative_link_titles'}
  try:
   req=urllib.request.Request('https://graph.facebook.com/v22.0/ads_archive?'+urllib.parse.urlencode(params),headers={'User-Agent':'MarketResearch/1.0'})
   with urllib.request.urlopen(req,timeout=12) as resp:payload=json.load(resp)
-  return [{'id':str(x.get('id','')),'title':x.get('page_name',brand),'brand':brand,'url':x['ad_snapshot_url'],'source':'Meta Ad Library','description':(x.get('ad_creative_bodies') or [''])[0],'started_at':x.get('ad_delivery_start_time',''),'record_type':'verified_ad','media_status':'官方快照可查看素材，媒体文件未直接获取'} for x in payload.get('data',[]) if str(x.get('ad_snapshot_url','')).startswith('https://')]
+  if not isinstance(payload.get('data'),list):raise ValueError('Missing ad results')
+  ads=[{'id':str(x.get('id','')),'title':x.get('page_name',brand),'brand':brand,'url':x['ad_snapshot_url'],'source':'Meta Ad Library','description':(x.get('ad_creative_bodies') or [''])[0],'started_at':x.get('ad_delivery_start_time',''),'record_type':'verified_ad','media_status':'官方快照可查看素材，媒体文件未直接获取'} for x in payload['data'] if str(x.get('ad_snapshot_url','')).startswith('https://')]
+  return ads,'ok'
  except Exception as exc:
-  print('Meta API unavailable:',country,brand,str(exc)[:140]);return []
+  print('Meta API unavailable:',country,brand,type(exc).__name__,getattr(exc,'code',''))
+  return [],'failed'
 
 previous={}
 path=ROOT/'data/market.json'
@@ -332,10 +335,10 @@ if seed_path.exists():
  except Exception as exc:print('Editorial translation cache unavailable:',str(exc)[:100])
 for country_code,old_items in previous.items():
  lang=COUNTRIES.get(country_code,('auto',))[0]
- for group in ('news','trending'):
+ for group in ('news','trending','gift_signals'):
   for entry in old_items.get(group,[]):
-   if entry.get('title') and entry.get('title_zh'):cache[lang+'|'+entry['title']]=entry['title_zh']
-result={'updated_at':datetime.now(timezone.utc).isoformat(),'countries':{},'quality':{'country_count':len(COUNTRIES),'product_coverage':{},'ad_coverage':{},'missing_product_countries':[]}}
+   if entry.get('title') and entry.get('title_zh'):cache.setdefault(lang+'|'+entry['title'],entry['title_zh'])
+result={'countries':{},'quality':{'country_count':len(COUNTRIES),'product_coverage':{},'ad_coverage':{},'missing_product_countries':[],'coverage':{}}}
 for code,(lang,geo,term) in COUNTRIES.items():
  # General country news only: local events across politics, economy, society, culture, weather, etc. Gift industry signals are separate.
  # Headlines are only labeled domestic if sourced from the country-focused search feed.
@@ -365,7 +368,6 @@ for code,(lang,geo,term) in COUNTRIES.items():
   if len(newsitems)>=3:break
  trenditems=readfeed(trending,3)
  for x in trenditems:x['scope']='当地综合热搜（非礼品需求）' 
- old=previous.get(code,{})
  for group in (newsitems,trenditems):
   for entry in group:
    entry['title_zh']=translate_zh(entry['title'],lang,cache)
@@ -391,15 +393,18 @@ for code,(lang,geo,term) in COUNTRIES.items():
   verified=[x for x in discovered if x.get('verified_public_product') and x.get('image') and x.get('url')]
   source_audit.append({'brand':shop_name,'url':landing,'verified_count':len(verified)})
   if not verified:continue
-  selected.append((shop_name,landing))
+  if shop_name.casefold() not in {brand.casefold() for brand,_ in selected}:
+   selected.append((shop_name,landing))
   for item in verified:
    if any(x.get('url')==item.get('url') for x in products):continue
-   item['selection_basis']='官网热销/推荐栏目' if any(k in landing.lower() for k in ('bestseller','meilleures-ventes')) else '官网公开商品（未验证热销排名）'
+   item['selection_basis']='官网公开商品（未验证热销排名）'
    products.append(item)
+   if len(products)>=6:break
  # Meta Ad Library discovery links are verified navigation, not individual ads.
  # Real ad records require Meta-approved API access or separately verified public post URLs.
  ad_searches=[]
- for brand,landing in selected:
+ public_brands=dict.fromkeys(brand for brand,_ in SHOPS.get(code,[])+selected)
+ for brand in public_brands:
   query=urllib.parse.urlencode({'active_status':'all','ad_type':'all','country':geo,'q':brand,'search_type':'keyword_unordered'})
   ad_searches.append({'brand':brand,'country':code,'url':'https://www.facebook.com/ads/library/?'+query,'source':'Meta Ad Library','record_type':'search_link','status':'广告资料库实时检索（非单条已核实广告）','category':'竞品品牌'})
  for category in ('首饰','围巾','照片礼品'):
@@ -408,13 +413,38 @@ for code,(lang,geo,term) in COUNTRIES.items():
   query=urllib.parse.urlencode({'active_status':'all','ad_type':'all','country':geo,'q':keyword,'search_type':'keyword_unordered'})
   ad_searches.append({'brand':category,'keyword':keyword,'country':code,'url':'https://www.facebook.com/ads/library/?'+query,'source':'Meta Ad Library','record_type':'search_link','status':'按Callie品类检索公开广告','category':'Callie同类商品'})
  real_ads=[]
- if os.environ.get('META_AD_LIBRARY_ACCESS_TOKEN'):
-  for brand,_ in selected[:2]:real_ads.extend(fetch_meta_ads(brand,geo))
- result['countries'][code]={'news':newsitems,'trending':trenditems,'products':products,'product_source_audit':source_audit,'ads':real_ads,'ad_searches':ad_searches,'ad_data_status':('已获取官方广告记录' if real_ads else '暂无可核实广告记录；官方接口需要授权'),'gift_keyword':term,'category_signals':category_signals(code,lang,geo),'gift_signals':gift_signals,'gift_signal_method':'Google News 公开搜索匹配，仅作行业线索，不是 Google Trends 指数或销量','news_method':'综合新闻：本国地名与国家关键词优先，国家版新闻补充；不限定礼品行业，搜索匹配不保证事件发生在本国'}
+ ad_checks=[]
+ for brand in list(public_brands)[:2]:
+  ads,status=fetch_meta_ads(brand,geo)
+  real_ads.extend(ads)
+  ad_checks.append({'brand':brand,'status':status,'count':len(ads)})
+ ad_status='本轮查询未返回可核实广告'
+ if real_ads:ad_status='已获取官方广告记录'
+ elif any(check['status']=='missing_token' for check in ad_checks):ad_status='未配置广告接口令牌'
+ elif any(check['status']=='failed' for check in ad_checks):ad_status='本轮广告接口查询失败'
+ result['countries'][code]={'news':newsitems,'trending':trenditems,'products':products,'product_source_audit':source_audit,'ads':real_ads,'ad_searches':ad_searches,'ad_data_status':ad_status,'ad_checks':ad_checks,'gift_keyword':term,'category_signals':category_signals(code,lang,geo),'gift_signals':gift_signals,'gift_signal_method':'Google News 公开搜索匹配，仅作行业线索，不是 Google Trends 指数或销量','news_method':'综合新闻：本国地名与国家关键词优先，国家版新闻补充；不限定礼品行业，搜索匹配不保证事件发生在本国'}
  verified_count=sum(bool(p.get('verified_public_product') and p.get('image')) for p in products)
  result['quality']['product_coverage'][code]=verified_count
  result['quality']['ad_coverage'][code]=len(real_ads)
+ result['quality']['coverage'][code]={
+  'news':len(newsitems),'news_translated':sum(bool(x['title_zh']) for x in newsitems),
+  'trending':len(trenditems),'trending_translated':sum(bool(x['title_zh']) for x in trenditems),
+  'gift_signals':len(gift_signals),'gift_translated':sum(bool(x['title_zh']) for x in gift_signals),
+  'products':verified_count,'ads':len(real_ads)}
  if not verified_count:result['quality']['missing_product_countries'].append(code)
  print(code,'news',len(newsitems),'trends',len(trenditems),'verified_products',verified_count,'ad_records',len(real_ads))
+coverage=result['quality']['coverage'].values()
+missing=[field for field in ('news','news_translated','trending','products') if not any(row[field] for row in coverage)]
+if missing:
+ raise SystemExit('Keeping previous market snapshot: no nationwide coverage for '+', '.join(missing))
+result['updated_at']=datetime.now(timezone.utc).isoformat()
 path.parent.mkdir(exist_ok=True)
-path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+temporary=path.with_suffix('.json.tmp')
+temporary.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+backup_path=path.with_name('market_snapshot.js')
+backup_temp=backup_path.with_suffix('.js.tmp')
+backup_temp.write_text(
+ 'window.marketSnapshotBackup='+json.dumps(result,ensure_ascii=True,separators=(',',':'))+';\n',
+ encoding='utf-8')
+backup_temp.replace(backup_path)
+temporary.replace(path)

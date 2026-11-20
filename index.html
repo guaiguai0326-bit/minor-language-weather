@@ -199,7 +199,7 @@
 /* V2.7 参考图1/2区域一比一结构还原 */
 #details>.local-card{
  grid-template-columns:340px minmax(0,1fr)!important;
- grid-template-rows:350px auto!important;
+ grid-template-rows:auto auto!important;
  grid-template-areas:"map culture" "cities cities"!important;
  gap:10px!important;
  padding:12px!important;
@@ -221,7 +221,7 @@
 .map-city-label:nth-child(2):before{background:#f3a51b}.map-city-label:nth-child(3):before{background:#ef5b62}
 .map-city-label:nth-child(4):before{background:#8a63e6}.map-city-label:nth-child(5):before{background:#24b886}
 .map-city-label:nth-child(6):before{background:#718096}
-#details .local-body{height:350px!important;min-height:350px!important;overflow:auto!important;padding:16px 18px!important}
+#details .local-body{padding:16px 18px!important}
 .country-city-strip{
  display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:8px!important;
  border:0!important;background:transparent!important;
@@ -248,7 +248,7 @@
  position:relative!important;
  display:grid!important;
  grid-template-columns:350px minmax(0,1fr)!important;
- grid-template-rows:36px 350px auto!important;
+ grid-template-rows:auto minmax(350px,auto) auto!important;
  grid-template-areas:
    "head head"
    "map culture"
@@ -300,7 +300,7 @@
 .map-city-label:nth-child(6):before{background:#718096!important}
 
 #details .local-body{
- grid-area:culture!important;height:350px!important;min-height:350px!important;overflow:auto!important;
+ grid-area:culture!important;height:auto!important;min-width:0;overflow-wrap:anywhere;
  background:#fff!important;border:1px solid #d8e1ec!important;border-radius:12px!important;
  padding:16px 18px!important;box-sizing:border-box!important;
 }
@@ -345,7 +345,7 @@
 /* V2.9 —— 1地图、2城市天气，按左侧参考图视觉还原 */
 #details>.local-card{
   grid-template-columns:350px minmax(0,1fr)!important;
-  grid-template-rows:34px 350px 196px!important;
+  grid-template-rows:auto minmax(350px,auto) auto!important;
   gap:7px 9px!important;
   padding:11px 13px 13px!important;
 }
@@ -375,10 +375,10 @@
 /* 六城卡：还原左侧参考图的信息密度和上下层级 */
 .country-city-strip{
   grid-template-columns:repeat(6,minmax(0,1fr))!important;
-  gap:7px!important;height:196px!important;
+  gap:7px!important;
 }
 .city-mini{
-  min-width:0!important;height:196px!important;min-height:196px!important;
+  min-width:0!important;min-height:190px!important;
   padding:8px 9px!important;border-radius:10px!important;
   overflow:hidden!important;
 }
@@ -416,6 +416,13 @@
 .city-mini .week{
   margin-top:4px!important;font-size:9px!important;line-height:1.45!important;
   white-space:normal!important;
+}
+@media(max-width:1100px){
+ .country-city-strip{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:850px){
+ #details>.local-card{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto!important}
+ .country-city-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 
 /* V3.0：地图恢复清晰 + 整体字号放大 + 城市中英文 */
@@ -461,10 +468,29 @@
 /* V3.2 国家互动地图 */
 #details .local-map{
   position:relative!important;
-  height:350px!important;min-height:350px!important;
+  height:auto!important;min-height:350px!important;
+  align-self:stretch!important;
   background:#fbfdff!important;
   border:1px solid #d8e1ec!important;border-radius:12px!important;
   overflow:hidden!important;padding:0!important;
+}
+#details .local-body{
+  align-self:stretch!important;
+  padding:clamp(10px,1.1vw,16px) clamp(12px,1.3vw,18px)!important;
+}
+#details .local-body p{
+  font-size:clamp(14px,1.15vw,16px)!important;
+  line-height:1.55!important;
+  margin:6px 0!important;
+}
+#details .local-body .fact-ref{
+  font-size:clamp(12px,1.05vw,15px)!important;
+  line-height:1.5!important;
+  padding:8px 10px!important;
+  margin-top:8px!important;
+}
+@media(max-width:850px){
+  #details .local-map{min-height:clamp(220px,76vw,350px)!important}
 }
 #details .local-map img,.map-city-labels{display:none!important}
 .country-interactive-map{
@@ -495,8 +521,8 @@
 }
 
 /* V5.6 室外+室内双视角：两者同时保留 */
-.outdoor-action-v56,.indoor-action-v55{display:block!important;margin:10px 0!important;line-height:1.7!important}
-.outdoor-action-v56 b,.indoor-action-v55 b{font-weight:800!important;color:#243b63!important}
+.outdoor-action-v56{display:block!important}
+.outdoor-action-v56 b{font-weight:800!important;color:#243b63!important}
 </style><script>
 const cultureMedia={
  '德国':{map:'https://commons.wikimedia.org/wiki/Special:FilePath/Germany%20location%20map.svg',
@@ -637,13 +663,6 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 .v5-season{font-size:11px;font-weight:850;color:#64748b;white-space:nowrap}
 .v5-cal-head{gap:7px}
 .v5-today{margin-left:auto}
-.indoor-action-v51{
-  margin-top:10px;padding:10px 12px;border-radius:10px;
-  background:#f6f9fd;border:1px solid #e3ebf5;color:#314968;
-  font-size:14px;line-height:1.65
-}
-.indoor-action-v51 b{color:#0b2345}
-.indoor-action-v51{border-left:3px solid #8eb5e8!important;background:linear-gradient(90deg,#f4f8fd,#fbfdff)!important}
 </style>
 
 
@@ -657,29 +676,10 @@ const cityGeo={"德国": [["柏林", "Berlin", 13.405, 52.52], ["汉堡", "Hambu
 }
 .v5-day.is-holiday{background:#fff8f8!important}
 
-/* 室内行动固定成一个明确模块，不再藏在长段文字里 */
-.indoor-action-v51{
- display:block!important;
- margin:10px 0 8px!important;
- padding:10px 12px!important;
- border:1px solid #dce8f6!important;
- border-left:4px solid #78a8df!important;
- border-radius:10px!important;
- background:#f7faff!important;
- line-height:1.7!important;
- color:#334d70!important;
-}
-.indoor-action-v51 b{
- display:inline!important;
- color:#0b2345!important;
- font-size:14px!important;
-}
 </style>
 
 
 <style id="v5-5-visible-fixes">
-.indoor-action-v55{font-size:16px!important;line-height:1.72!important;margin:7px 0!important;color:#526077!important}
-.indoor-action-v55 b{color:#172033!important}
 .v5holiday{z-index:3!important;background:rgba(255,255,255,.88);border-radius:3px;padding:0 1px}
 .v5day:has(.v5holiday){background:#fff6f7!important}
 </style>
@@ -797,7 +797,6 @@ align-items:stretch!important;gap:8px!important}
 #v6-intel #v6-overview .v6-market-cell .v6-live-item{padding:10px 0!important;line-height:1.5!important}
 #v6-intel #v6-overview .v6-market-cell .v6-live-item strong{font-size:12px!important}
 #v6-intel #v6-overview .v6-market-cell .v6-live-item img{max-height:100px!important}
-#v6-intel #v6-overview .v6-market-cell .v6-live-item:nth-of-type(n+4){display:none!important}
 #v6-intel #v6-overview .v6-market-cell .v6-category-keyword-list{max-width:100%!important}
 #v6-intel #v6-overview .v6-market-cell .v6-category-chip{padding:8px 0!important;margin:0!important}
 }
@@ -915,7 +914,8 @@ body>.wrap>.top{box-sizing:border-box!important;border-radius:18px!important;ove
   <div class="map-note">按当天实时温度、降雨、风感与昼夜温差动态映射中国相近体感区域；天气变化后，国家标签与高亮区域会自动移动。</div>
 </div></div>
 <div class="section card"><h2 id="section-compare">📊 9国完整对标表</h2><div class="tablewrap"><table class="tbl"><thead><tr><th>区域/国家</th><th>今日天气</th><th>🇨🇳 中国体感对标</th><th>🧥 穿衣/素材参考</th><th>📈 未来7天</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
-<div class="section"><h2 id="section-culture">☕ 当地生活行动 × 文化场景</h2><div class="detail" id="details"></div></div><div class="foot">天气数据：Open-Meteo；文化场景为设计参考，不代表所有当地居民。中国体感对标是用于视觉决策的近似类比。</div></div>
+<div class="section"><h2 id="section-culture">☕ 当地生活行动 × 文化场景</h2>
+<div class="detail" id="details"></div></div><div class="foot">天气数据：Open-Meteo；文化场景为设计参考，不代表所有当地居民。中国体感对标是用于视觉决策的近似类比。</div></div>
 <script>
 const places=[
 {r:'北欧',c:'挪威',f:'🇳🇴',lat:59.9139,lon:10.7522,tz:'Europe/Oslo',culture:'秋季常见徒步、桑拿、城市文化活动；风雨天气更强调防风防水与分层穿搭。',scene:'木屋暖光、热饮、羊毛针织、户外徒步、桑拿/冷水体验'},
@@ -946,7 +946,8 @@ const calloutSlots=[
  [13,18],[10,32],[12,49],[16,65]
 ];
 async function renderChinaMap(rows){
- const el=document.getElementById('chinaMap'); if(!el||!window.echarts)return;
+ const el=document.getElementById('chinaMap'); if(!el)return;
+ if(!window.echarts){el.textContent='地图组件暂不可用，请查看下方天气对标表。';return}
  try{
   if(!chinaGeoCache){chinaGeoCache=await fetch(chinaGeoUrl).then(r=>{if(!r.ok)throw Error('map');return r.json()})}
   echarts.registerMap('china-real',chinaGeoCache);
@@ -1039,24 +1040,98 @@ function markerPos(x,idx,rows){
  const a=groups[x.cn]||[[50,50],[60,55],[40,55]]; return a[n%a.length];
 }
 function trend(d){let drop=d.temperature_2m_max[0]-d.temperature_2m_max[6], mr=Math.max(...d.precipitation_probability_max), mn=Math.min(...d.temperature_2m_min);if(drop>=5)return'⬇️ 7天明显降温';if(drop<=-5)return'⬆️ 7天明显升温';if(mn<=5)return'❄️ 低温持续';if(mr>=80)return'🌧️ 7天降雨偏多';return'➡️ 整体稳定'}
-async function load(){let rows=[];for(const p of places){let u=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,wind_speed_10m_max&timezone=${encodeURIComponent(p.tz)}&forecast_days=7`;let j=await fetch(u).then(r=>r.json()),d=j.daily,hi=Math.round(d.temperature_2m_max[0]),lo=Math.round(d.temperature_2m_min[0]),rain=d.precipitation_probability_max[0],wind=Math.round(d.wind_speed_10m_max[0]),m=match(hi,lo,rain,wind);rows.push({...p,hi,lo,rain,wind,ic:icon(d.weather_code[0]),cn:m[0],wear:m[1],season:m[2],x:m[3],y:m[4],tr:trend(d)});}render(rows)}
+async function load(){
+ const results=await Promise.allSettled(places.map(async p=>{
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,wind_speed_10m_max&timezone=${encodeURIComponent(p.tz)}&forecast_days=7`;
+  const response=await fetch(url,{signal:AbortSignal.timeout(12000)});
+  if(!response.ok)throw Error('Weather HTTP '+response.status);
+  const {daily:d}=await response.json();
+  const fields=['temperature_2m_max','temperature_2m_min','precipitation_probability_max','weather_code','wind_speed_10m_max'];
+  if(!d||!fields.every(key=>Array.isArray(d[key])&&d[key].length>=7&&d[key].slice(0,7).every(Number.isFinite)))throw Error('Incomplete weather forecast');
+  const hi=Math.round(d.temperature_2m_max[0]),lo=Math.round(d.temperature_2m_min[0]),rain=d.precipitation_probability_max[0],wind=Math.round(d.wind_speed_10m_max[0]);
+  const [cn,wear,season,x,y]=match(hi,lo,rain,wind);
+  return {...p,hi,lo,rain,wind,ic:icon(d.weather_code[0]),cn,wear,season,x,y,tr:trend(d),daily:d};
+ }));
+ const rows=results.flatMap(r=>r.status==='fulfilled'?[r.value]:[]);
+ if(!rows.length)throw Error('No country weather available');
+ render(rows);
+ const missing=places.filter(p=>!rows.some(x=>x.c===p.c));
+ if(missing.length){
+  document.getElementById('updated').textContent='部分天气暂缺｜'+missing.map(p=>p.c).join('、');
+  document.getElementById('tbody').insertAdjacentHTML('beforeend',missing.map(p=>`<tr><td>${p.f} ${p.c}</td><td colspan="4">天气暂不可用</td></tr>`).join(''));
+ }
+}
 
 const countryMeta={"德国": ["DE", "Germany"], "法国": ["FR", "France"], "西班牙": ["ES", "Spain"], "意大利": ["IT", "Italy"], "荷兰": ["NL", "Netherlands"], "挪威": ["NO", "Norway"], "瑞典": ["SE", "Sweden"], "芬兰": ["FI", "Finland"], "波兰": ["PL", "Poland"]};
 const marketCities={"德国": [["首都", "柏林", "Berlin"], ["北", "汉堡", "Hamburg"], ["南", "慕尼黑", "Munich"], ["西", "科隆", "Cologne"], ["东", "德累斯顿", "Dresden"], ["中", "法兰克福", "Frankfurt"]], "法国": [["首都", "巴黎", "Paris"], ["北", "里尔", "Lille"], ["南", "马赛", "Marseille"], ["西", "南特", "Nantes"], ["东", "斯特拉斯堡", "Strasbourg"], ["中", "里昂", "Lyon"]], "西班牙": [["首都", "马德里", "Madrid"], ["北", "毕尔巴鄂", "Bilbao"], ["南", "塞维利亚", "Seville"], ["西", "萨拉曼卡", "Salamanca"], ["东", "巴塞罗那", "Barcelona"], ["中", "托莱多", "Toledo"]], "意大利": [["首都", "罗马", "Rome"], ["北", "米兰", "Milan"], ["南", "那不勒斯", "Naples"], ["西", "热那亚", "Genoa"], ["东", "威尼斯", "Venice"], ["中", "佛罗伦萨", "Florence"]], "荷兰": [["首都", "阿姆斯特丹", "Amsterdam"], ["北", "格罗宁根", "Groningen"], ["南", "马斯特里赫特", "Maastricht"], ["西", "鹿特丹", "Rotterdam"], ["东", "恩斯赫德", "Enschede"], ["中", "乌得勒支", "Utrecht"]], "挪威": [["首都", "奥斯陆", "Oslo"], ["北", "特罗姆瑟", "Tromsø"], ["南", "克里斯蒂安桑", "Kristiansand"], ["西", "卑尔根", "Bergen"], ["东", "哈马尔", "Hamar"], ["中", "特隆赫姆", "Trondheim"]], "瑞典": [["首都", "斯德哥尔摩", "Stockholm"], ["北", "于默奥", "Umeå"], ["南", "马尔默", "Malmö"], ["西", "哥德堡", "Gothenburg"], ["东", "卡尔马", "Kalmar"], ["中", "厄勒布鲁", "Örebro"]], "芬兰": [["首都", "赫尔辛基", "Helsinki"], ["北", "罗瓦涅米", "Rovaniemi"], ["南", "图尔库", "Turku"], ["西", "瓦萨", "Vaasa"], ["东", "约恩苏", "Joensuu"], ["中", "坦佩雷", "Tampere"]], "波兰": [["首都", "华沙", "Warsaw"], ["北", "格但斯克", "Gdańsk"], ["南", "克拉科夫", "Kraków"], ["西", "波兹南", "Poznań"], ["东", "卢布林", "Lublin"], ["中", "罗兹", "Łódź"]]};
 
 function buildCityStrip(x){
- const cs=marketCities[x.c]||[];
- const mid=Math.round((Number(x.lo)+Number(x.hi))/2);
- return `<div class="country-city-strip">${cs.map((c,i)=>{
-   const hi=Math.round(Number(x.hi)+(i%3-1)*1.2);
-   const lo=Math.round(Number(x.lo)+(i%2?-.8:.6));
-   const icon=i%3===0?'🌦️':(i%3===1?'☁️':'🌤️');
-   return `<div class="city-mini"><div class="city-top"><span class="zone">${c[0]}</span><span class="weather">${icon} ${i%2?'毛毛雨':'明天'}</span></div>
-   <div class="city-name">${c[1]}<small>${c[2]||""}</small></div><div><span class="temp">${hi}° / ${lo}°</span><span class="today">今日</span></div>
-   <div class="city-forecast-icons">
-   ${['一','二','三','四','五','六','日'].map((d,j)=>`<span>${d}<br>${j%3===0?'🌦️':j%3===1?'☁️':'🌤️'}<br>${hi+(j%3-1)}°</span>`).join('')}
-   </div><div class="week">未来7天 ${lo-2}°~${hi+2}°｜30天均温 ${mid}°</div></div>`;
- }).join('')}</div>`;
+ return `<div class="country-city-strip" data-city-country="${x.c}">${(marketCities[x.c]||[]).map((city,i)=>
+   renderCityCard(city,i===0?x.daily:null,0,true)
+ ).join('')}</div>`;
+}
+function renderCityCard([zone,name,english],daily,today,loading=false){
+ const hi=daily?.temperature_2m_max?.[today],lo=daily?.temperature_2m_min?.[today],code=daily?.weather_code?.[today];
+ const available=[hi,lo,code].every(Number.isFinite);
+ const highs=available?daily.temperature_2m_max.slice(today,today+7):[];
+ const lows=available?daily.temperature_2m_min.slice(today,today+7):[];
+ const forecast=highs.map((max,i)=>{
+  const day=new Date(daily.time?.[today+i]+'T00:00:00Z').getUTCDay();
+  if(!Number.isFinite(day)||!Number.isFinite(max))return '';
+  return `<span>${'日一二三四五六'[day]}<br>${icon(daily.weather_code[today+i])}<br>${Math.round(max)}°</span>`;
+ }).join('');
+ const range=highs.length===7&&lows.length===7&&[...highs,...lows].every(Number.isFinite)
+  ?`未来7天 ${Math.round(Math.min(...lows))}°~${Math.round(Math.max(...highs))}°`:'';
+ const pastHighs=available?daily.temperature_2m_max.slice(Math.max(0,today-30),today):[];
+ const pastLows=available?daily.temperature_2m_min.slice(Math.max(0,today-30),today):[];
+ const past=[...pastHighs,...pastLows];
+ const avg=past.length===60&&past.every(Number.isFinite)?`过去30天均温估算 ${Math.round(past.reduce((a,b)=>a+b,0)/60)}°`:'';
+ return `<div class="city-mini" data-city-weather="${available?'available':'missing'}"><div class="city-top"><span class="zone">${zone}</span></div>
+   <div class="city-name">${name}<small>${english}</small></div>
+   ${available?`<div><span class="temp">${icon(code)} ${Math.round(hi)}° / ${Math.round(lo)}°</span><span class="today">今日</span></div>`:`<div class="week">${loading?'正在读取城市天气…':'城市天气暂不可用'}</div>`}
+   ${forecast?`<div class="city-forecast-icons">${forecast}</div>`:''}
+   ${range||avg?`<div class="week">${[range,avg].filter(Boolean).join('｜')}</div>`:''}</div>`;
+}
+async function loadCityWeather(){
+ const strips=[...document.querySelectorAll('[data-city-country]')];
+ await Promise.all(strips.map(async strip=>{
+  const country=strip.dataset.cityCountry;
+  const cities=marketCities[country]||[];
+  const coordinates=new Map((cityGeo[country]||[]).map(([name,,lon,lat])=>[name,[lat,lon]]));
+  const locations=cities.filter(([,name])=>coordinates.has(name));
+  const place=places.find(p=>p.c===country);
+  if(!place)return;
+  let forecasts=new Map();
+  try{
+   if(!locations.length)throw Error('Missing city coordinates');
+   const query=new URLSearchParams({
+    latitude:locations.map(([,name])=>coordinates.get(name)[0]).join(','),
+    longitude:locations.map(([,name])=>coordinates.get(name)[1]).join(','),
+    daily:'temperature_2m_max,temperature_2m_min,weather_code',
+    timezone:place.tz,past_days:'30',forecast_days:'7'
+   });
+   const response=await fetch('https://api.open-meteo.com/v1/forecast?'+query,{signal:AbortSignal.timeout(12000)});
+   if(!response.ok)throw Error('City weather HTTP '+response.status);
+   const data=await response.json(),rows=Array.isArray(data)?data:[data];
+   if(rows.length!==locations.length)throw Error('Unexpected city forecast count');
+   forecasts=new Map(locations.map(([,name],i)=>[name,rows[i]?.daily]));
+  }catch(error){console.warn('City weather unavailable:',country,error.message)}
+  const now=new Intl.DateTimeFormat('sv-SE',{timeZone:place.tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const means=cities.map((city,i)=>{
+   const daily=forecasts.get(city[1]),today=daily?.time?.indexOf(now)??-1;
+   const hi=daily?.temperature_2m_max?.[today],lo=daily?.temperature_2m_min?.[today];
+   if([hi,lo,daily?.weather_code?.[today]].every(Number.isFinite)){
+    strip.children[i].outerHTML=renderCityCard(city,daily,today);
+    return (hi+lo)/2;
+   }
+   if(strip.children[i].dataset.cityWeather==='missing')strip.children[i].outerHTML=renderCityCard(city,null,-1);
+   return null;
+  }).filter(Number.isFinite);
+  if(means.length===cities.length&&means.length){
+   const heading=strip.closest('.local-card')?.querySelector('.country-head-right');
+   if(heading)heading.textContent=`6城今日高低温中值的平均 ${(means.reduce((a,b)=>a+b,0)/means.length).toFixed(1)}°`;
+  }
+ }));
 }
 const localFacts={
  '德国':{
@@ -1133,41 +1208,49 @@ const localFacts={
  }
 };
 
-const indoorActionsV55={
- '德国':'降温或阴雨时，咖啡馆、面包店、居家烘焙/做饭、朋友家庭聚会、博物馆与室内购物更自然。',
- '法国':'咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊与室内购物，是秋季常见的室内生活场景。',
- '西班牙':'餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场与购物中心更适合雨天或晚间社交场景。',
- '意大利':'咖啡馆喝 Espresso、餐厅与家庭餐桌、居家做饭/烘焙、朋友家庭聚会及室内文化场馆都很自然。',
- '荷兰':'风雨天气下更偏向咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店和室内购物。',
- '挪威':'低温风雨时以木屋/居家休息、热饮、桑拿、壁炉边聊天、家庭聚会和阅读为主。',
- '瑞典':'Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读与家居生活，是典型秋季室内场景。',
- '芬兰':'桑拿、咖啡、居家烘焙、阅读、家庭时间和暖感木质空间，是转凉后的典型室内生活。',
- '波兰':'咖啡馆、家庭餐桌、热饮/烘焙、朋友聚会、室内市场和购物场景随秋季降温增加。'
+function render(rows){const order=['德国','法国','西班牙','意大利','荷兰','挪威','瑞典','芬兰','波兰'];rows.sort((a,b)=>order.indexOf(a.c)-order.indexOf(b.c));document.getElementById('updated').textContent='实时更新｜'+new Date().toLocaleString('zh-CN',{hour12:false});document.getElementById('overview').innerHTML=rows.map(x=>`<div class="mini"><b>${x.f} ${x.c}</b><div class="t">${x.lo}~${x.hi}℃ ${x.ic}</div><small>${x.season}｜${x.tr.replace(/^.. /,'')}</small></div>`).join('');renderChinaMap(rows);const regionOrder=['西欧','中欧','南欧','北欧'];const tableRows=[...rows].sort((a,b)=>{let d=regionOrder.indexOf(a.r)-regionOrder.indexOf(b.r);return d||order.indexOf(a.c)-order.indexOf(b.c)});document.getElementById('tbody').innerHTML=tableRows.map(x=>`<tr><td><span class="region">${x.r}</span>｜${x.f}${x.c}</td><td>${x.lo}~${x.hi}℃ ${x.ic}<br><small>降雨${x.rain}% · 风${x.wind}km/h</small></td><td>${x.cn}</td><td>${x.wear}</td><td>${x.tr}</td></tr>`).join('');renderCultureCards(rows)}
+
+const countryIndoorActions={
+ "德国": "降温或阴雨时更自然转向室内：咖啡馆喝咖啡/热饮、面包店买烘焙、家中做饭与烘焙、朋友家庭聚会、博物馆/展览、室内购物。素材可重点表现暖光、木质桌面、马克杯、烘焙、针织毯/毛衣、窗边雨景。",
+ "法国": "阴雨和转凉时，咖啡馆、餐厅与居家生活更自然：咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊、室内购物。素材可用咖啡杯、可颂/甜点、餐桌、暖灯、窗边阅读、针织穿搭。",
+ "西班牙": "天气不适合户外时，生活会转向餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场和购物中心；晚间社交仍较活跃。素材可表现多人餐桌、咖啡、料理过程、暖色室内、朋友互动和家庭场景。",
+ "意大利": "降雨或降温时适合咖啡馆、餐厅、家庭餐桌和室内社交：喝 espresso、做饭/烘焙、家庭聚餐、逛室内商店与文化场馆。素材可用咖啡杯、面包/料理、餐桌、暖光厨房、针织与居家慢生活。",
+ "荷兰": "风雨天气下室内活动价值明显：咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店/商店、室内购物。素材可强调窗外雨景与室内暖光反差，搭配热饮、花束、蜡烛、毛毯、针织。",
+ "挪威": "低温、风雨天气下室内生活很重要：木屋/家中休息、咖啡与热饮、桑拿、壁炉边聊天、家庭聚会、阅读。素材可突出木屋、壁炉/蜡烛暖光、羊毛针织、马克杯、毛毯、桑拿与窗外冷天气。",
+ "瑞典": "进入秋季后室内 cosy 场景非常自然：Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读和家居布置。素材重点可用咖啡+甜点、蜡烛暖光、木质家居、针织、毛毯、窗边阴雨。",
+ "芬兰": "转凉后室内活动以桑拿、咖啡、居家烘焙、阅读和家庭时间为主；天气差时室内暖感更明显。素材可表现桑拿、木质空间、咖啡杯、烘焙、暖灯、羊毛袜/针织、窗外秋雨或冷空气。",
+ "波兰": "秋季降温后，咖啡馆、家庭餐桌、烘焙、朋友聚会、室内市场/购物等场景自然增加。素材可使用热饮、汤/烘焙、餐桌、暖光家居、针织毛毯、窗边雨景，突出室内温暖感。"
 };
 
-function render(rows){const order=['德国','法国','西班牙','意大利','荷兰','挪威','瑞典','芬兰','波兰'];rows.sort((a,b)=>order.indexOf(a.c)-order.indexOf(b.c));document.getElementById('updated').textContent='实时更新｜'+new Date().toLocaleString('zh-CN',{hour12:false});document.getElementById('overview').innerHTML=rows.map(x=>`<div class="mini"><b>${x.f} ${x.c}</b><div class="t">${x.lo}~${x.hi}℃ ${x.ic}</div><small>${x.season}｜${x.tr.replace(/^.. /,'')}</small></div>`).join('');renderChinaMap(rows);const regionOrder=['西欧','中欧','南欧','北欧'];const tableRows=[...rows].sort((a,b)=>{let d=regionOrder.indexOf(a.r)-regionOrder.indexOf(b.r);return d||order.indexOf(a.c)-order.indexOf(b.c)});document.getElementById('tbody').innerHTML=tableRows.map(x=>`<tr><td><span class="region">${x.r}</span>｜${x.f}${x.c}</td><td>${x.lo}~${x.hi}℃ ${x.ic}<br><small>降雨${x.rain}% · 风${x.wind}km/h</small></td><td>${x.cn}</td><td>${x.wear}</td><td>${x.tr}</td></tr>`).join('');document.getElementById('details').innerHTML=rows.map(x=>{const f=localFacts[x.c]||{};const avg=((Number(x.lo)+Number(x.hi))/2).toFixed(1);return `<div class="card country local-card">
-<div class="country-head"><div class="country-head-left">${x.c}<span class="ccode">${(countryMeta[x.c]||[])[0]||""}</span><small>${(countryMeta[x.c]||[])[1]||""}</small></div><div class="country-head-right">6城今日均温 <b>${avg}°</b></div></div>
-<div class="local-map" data-country="${x.c}"><div class="country-interactive-map"><div class="map-loading">互动地图加载中…</div></div><div class="map-tip">鼠标悬停城市查看天气位置</div></div>
-<div class="local-body"><h3>${x.f} ${x.c}｜${x.season}</h3>
-<div class="tags"><span class="tag">📍${x.cn}</span><span class="tag">🧥${x.wear}</span></div>
-<p class="outdoor-action-v56"><b>🌳 室外行动：</b>${x.culture}</p><p class="indoor-action-v55"><b>🏠 室内行动：</b>${indoorActionsV55[x.c]||""}</p><p><b>素材机会：</b>${x.scene}</p>
+function renderCultureCards(rows){
+ const byCountry=new Map(rows.map(row=>[row.c,row]));
+ const order=['德国','法国','西班牙','意大利','荷兰','挪威','瑞典','芬兰','波兰'];
+ document.getElementById('details').innerHTML=order.map(country=>{
+  const x=byCountry.get(country)||places.find(place=>place.c===country);
+  const f=localFacts[country]||{};
+  const avg=x.daily?((x.lo+x.hi)/2).toFixed(1):null;
+  const insight=x.daily?getMarketInsight(Number(avg),x.rain,x.wind,x.c):null;
+  const materials=[...new Set([x.scene,insight?.materials].filter(Boolean).flatMap(text=>text.split('、').map(item=>item.trim())).filter(Boolean))];
+  return `<div class="card country local-card">
+<div class="country-head"><div class="country-head-left">${x.c}<span class="ccode">${(countryMeta[x.c]||[])[0]||""}</span><small>${(countryMeta[x.c]||[])[1]||""}</small></div><div class="country-head-right">${avg===null?"首都天气暂缺":`首都今日高低温中值 <b>${avg}°</b>`}</div></div>
+<div class="local-map" data-country="${x.c}"><div class="country-interactive-map"><div class="map-loading">互动地图加载中…</div></div><div class="map-tip">地图标注主要城市位置</div></div>
+<div class="local-body"><h3>${x.f} ${x.c}${insight?`｜${insight.season}`:""}</h3>
+${insight?`<div class="tags"><span class="tag">📍${insight.chinaFeel}</span><span class="tag">🧥${insight.clothing}</span></div>`:""}
+<p class="outdoor-action-v56"><b>🌳 室外行动：</b>${x.culture}</p>
+<p class="outdoor-action-v56"><b>🏠 室内行动：</b>${countryIndoorActions[country]}</p>
+<p><b>素材机会：</b>${materials.join('、')}</p>
+${insight?`<p><b>今日天气提示：</b>${insight.actions}</p>`:""}
 <div class="fact-ref"><span class="fact-date">📅 ${f.time||'季节参考'}</span><b>${f.title||''}</b><br>${f.note||''}<br>
 <a href="${f.url||'#'}" target="_blank" rel="noopener">🔗 查看事实依据｜${f.source||'官方来源'}</a></div></div>
 ${buildCityStrip(x)}</div>`}).join('')}
+renderCultureCards([]);
 load().catch(e=>{
  console.error('Weather request failed:',e);
  const status=document.getElementById('updated');
  if(status)status.textContent='天气数据暂未连接｜其他模块正常展示';
- const order=['德国','法国','西班牙','意大利','荷兰','挪威','瑞典','芬兰','波兰'];
  const table=document.getElementById('tbody');
  if(table&&!table.children.length){table.innerHTML=places.map(p=>`<tr><td>${p.f||''} ${p.c}</td><td>天气暂不可用</td><td>等待实时天气</td><td>数据恢复后自动展示</td><td>等待更新</td></tr>`).join('');}
- const details=document.getElementById('details');
- if(details&&!details.children.length){details.innerHTML=places.map(p=>{
- const f=localFacts[p.c]||{};
- const indoors=indoorActionsV55[p.c]||'';
- return `<div class="card country local-card" style="display:block;padding:20px;margin-bottom:14px"><h3>${p.f||''} ${p.c}｜文化与生活场景</h3><p style="color:#65748a;font-size:13px">天气接口暂不可用，以下为文化参考，不代表今日天气。</p><p><b>🌳 室外行动：</b>${p.culture||'等待实时天气后补充场景建议'}</p><p><b>🏠 室内行动：</b>${indoors}</p><p><b>素材机会：</b>${p.scene||'待结合实时天气判断'}</p><div class="fact-ref"><b>${f.title||''}</b><p>${f.note||''}</p>${f.url?`<a href="${f.url}" target="_blank" rel="noopener">查看事实依据</a>`:''}</div></div>`;
- }).join('');}
-});
+}).then(loadCityWeather).catch(error=>console.warn('City weather display unavailable:',error.message));
 
 function _ringsFromGeometry(g){
   if(!g)return [];
@@ -1213,7 +1296,7 @@ function renderNativeCountryMaps(){
         <circle cx="${q[0]}" cy="${q[1]}" r="5.2" fill="${colors[i]}" stroke="white" stroke-width="2"/>
         <text x="${tx}" y="${q[1]-2}" text-anchor="${anchor}" class="native-city-cn">${c[0]}</text>
         <text x="${tx}" y="${q[1]+10}" text-anchor="${anchor}" class="native-city-en">${c[1]}</text>
-        <title>${c[0]} ${c[1]}｜对应下方城市天气卡</title>
+        <title>${c[0]} ${c[1]}</title>
       </g>`;
     });
     svg+='</svg>';
@@ -1285,72 +1368,6 @@ function getMarketInsight(temp, rain, wind, country){
   return {season,chinaFeel,clothing,actions,materials};
 }
 
-function updateDynamicInsights(){
-  document.querySelectorAll('#details > *').forEach(card=>{
-    const title = card.querySelector('h2,h3,.country-title,.detail-title');
-    if(!title) return;
-    const txt = title.textContent || "";
-    const codeMatch = txt.match(/\b(DE|FR|ES|IT|NL|NO|SE|FI|PL)\b/);
-    const countryName = (txt.match(/德国|法国|西班牙|意大利|荷兰|挪威|瑞典|芬兰|波兰/)||[])[0];
-    if(!codeMatch && !countryName) return;
-
-    // 优先从本国家城市卡中读取当天高低温，得到更贴近页面当前数据的平均体感。
-    const nums=[];
-    card.querySelectorAll('.city-card,.city-weather,.weather-card').forEach(c=>{
-      const m=(c.textContent||"").match(/(-?\d+(?:\.\d+)?)\s*°?\s*\/\s*(-?\d+(?:\.\d+)?)\s*°?/);
-      if(m) nums.push((Number(m[1])+Number(m[2]))/2);
-    });
-    let temp = nums.length ? nums.reduce((a,b)=>a+b,0)/nums.length : null;
-
-    // 若页面已有“均温”则优先采用。
-    const mean=(card.textContent||"").match(/均温\s*(-?\d+(?:\.\d+)?)°/);
-    if(mean) temp=Number(mean[1]);
-    if(temp==null) return;
-
-    // 从页面文本提取雨/风提示；没有时保持 0，不额外发网络请求。
-    const t=(card.textContent||"");
-    const rain=/雨|阵雨|毛毛雨|雷雨/.test(t)?5:0;
-    const wind=/大风|强风|风力/.test(t)?30:0;
-    const insight=getMarketInsight(temp,rain,wind,countryName||codeMatch?.[1]);
-
-    // 更新国家标题中的季节标签（若已有）
-    const seasonNodes=[...card.querySelectorAll('*')].filter(el =>
-      el.children.length===0 && /^(初秋|轻秋|秋冬|冬感|暖秋|深秋)$/.test((el.textContent||"").trim())
-    );
-    seasonNodes.forEach(n=>n.textContent=insight.season);
-
-    // 更新体感/穿衣胶囊
-    const pills=[...card.querySelectorAll('.pill,.tag,.chip,span')];
-    pills.forEach(p=>{
-      const s=(p.textContent||"").trim();
-      if(/北京|西安|武汉|长沙|长春|太原|成都|贵阳|青岛|大连/.test(s) && s.length<18)
-        p.textContent="📍 "+insight.chinaFeel;
-      if(/卫衣|夹克|外套|风衣|羊毛|针织|长袖|短袖|开衫|羽绒/.test(s) && s.length<24)
-        p.textContent="🧥 "+insight.clothing;
-    });
-
-    // 更新“当地行动”和“素材机会”
-    [...card.querySelectorAll('p,div')].forEach(el=>{
-      if(el.children.length>2) return;
-      const s=(el.textContent||"").trim();
-      if(/^(当地行动|🌳\s*室外行动)[：:]/.test(s))
-        el.innerHTML='<strong>🌳 室外行动：</strong> '+insight.actions;
-      else if(/^素材机会[：:]/.test(s))
-        el.innerHTML='<strong>素材机会：</strong> '+insight.materials;
-    });
-  });
-}
-
-// 天气异步刷新后也自动重算，不改变原来的天气请求逻辑。
-let insightTimer;
-const insightRoot=document.getElementById('details');
-if(insightRoot){
-  new MutationObserver(()=>{
-    clearTimeout(insightTimer);
-    insightTimer=setTimeout(updateDynamicInsights,120);
-  }).observe(insightRoot,{subtree:true,childList:true,characterData:true});
-}
-window.addEventListener('load',()=>setTimeout(updateDynamicInsights,250));
 /* ===== V3.8 end ===== */
 </script>
 <script id="v5-complete-js">
@@ -1374,22 +1391,27 @@ async function renderCard(card){
  const q=localYM(card.dataset.tz), y=q.y,m=q.m, last=new Date(Date.UTC(y,m,0)).getUTCDate(), first=(new Date(Date.UTC(y,m-1,1)).getUTCDay()+6)%7;
  card.querySelector('.v5-month').textContent=`${y}年${m}月`; const days=card.querySelector('.v5-days'); days.innerHTML='';
  let daily=null;
+ let fromCache=false;
  const cacheKey=`v57_weather_${card.dataset.code}`;
  const u=`https://api.open-meteo.com/v1/forecast?latitude=${card.dataset.lat}&longitude=${card.dataset.lon}&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=${encodeURIComponent(card.dataset.tz)}&past_days=31&forecast_days=16`;
  // V5.7：单国失败自动重试；成功后缓存，临时网络异常时保留上一次成功天气。
  for(let attempt=0;attempt<3&&!daily;attempt++){
    try{
      if(attempt) await new Promise(r=>setTimeout(r,700*attempt));
-     const res=await fetch(u,{cache:'no-store'});
+     const res=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(8000)});
      if(!res.ok) throw new Error('weather '+res.status);
      const j=await res.json();
-     if(j&&j.daily&&Array.isArray(j.daily.time)&&j.daily.time.length){daily=j.daily;try{localStorage.setItem(cacheKey,JSON.stringify({t:Date.now(),daily}))}catch(_){}}
+     if(j?.daily&&['time','temperature_2m_max','temperature_2m_min','weather_code'].every(key=>Array.isArray(j.daily[key]))&&j.daily.time.length){daily=j.daily;try{localStorage.setItem(cacheKey,JSON.stringify({t:Date.now(),daily}))}catch(_){}}
    }catch(e){}
  }
- if(!daily){try{const c=JSON.parse(localStorage.getItem(cacheKey)||'null');if(c&&c.daily)daily=c.daily}catch(e){}}
- const map={}; if(daily&&daily.time)daily.time.forEach((d,i)=>map[d]={hi:Math.round(daily.temperature_2m_max[i]),lo:Math.round(daily.temperature_2m_min[i]),code:daily.weather_code[i]});
+ if(!daily){try{const c=JSON.parse(localStorage.getItem(cacheKey)||'null');if(c?.daily&&Date.now()-c.t<24*3600000){daily=c.daily;fromCache=true}}catch(e){}}
+ const map={};
+ daily?.time?.forEach((date,i)=>{
+  const hi=daily.temperature_2m_max?.[i],lo=daily.temperature_2m_min?.[i],code=daily.weather_code?.[i];
+  if([hi,lo,code].every(Number.isFinite))map[date]={hi:Math.round(hi),lo:Math.round(lo),code};
+ });
  const today=`${y}-${String(m).padStart(2,'0')}-${String(q.d).padStart(2,'0')}`, tw=map[today];
- card.querySelector('.v5-today').textContent=tw?`${tw.lo}~${tw.hi}℃ ${wi(tw.code)}`:'当月天气';
+ card.querySelector('.v5-today').textContent=tw?`${tw.lo}~${tw.hi}℃ ${wi(tw.code)}${fromCache?' · 缓存':''}`:'今日天气暂不可用';
  for(let i=0;i<first;i++){const e=document.createElement('div');e.className='v5day empty';days.appendChild(e)}
  for(let d=1;d<=last;d++){const iso=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`, x=document.createElement('div');x.className='v5day'+(d===q.d?' today':'');const w=map[iso],hol=(H[card.dataset.code]||{})[iso];x.innerHTML=`<b>${d}</b>${w?`<em>${wi(w.code)}</em>`:''}${hol?`<span class="v5holiday">${hol}</span>`:''}`;days.appendChild(x)}
 }
@@ -1404,7 +1426,7 @@ setInterval(refreshAllCalendars,3600000);
 </script>
 
 
-<script id="v5-2-season-indoor">
+<script id="v5-2-season">
 (function(){
  function seasonText(m){
    if(m===12||m<=2)return '冬季';
@@ -1425,34 +1447,6 @@ setInterval(refreshAllCalendars,3600000);
  }
  refreshSeason();
 
- const indoor={
- '德国':'降温或阴雨时更自然转向室内：咖啡馆喝咖啡/热饮、面包店买烘焙、家中做饭与烘焙、朋友家庭聚会、博物馆/展览、室内购物。素材可重点表现暖光、木质桌面、马克杯、烘焙、针织毯/毛衣、窗边雨景。',
- '法国':'阴雨和转凉时，咖啡馆、餐厅与居家生活更自然：咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊、室内购物。素材可用咖啡杯、可颂/甜点、餐桌、暖灯、窗边阅读、针织穿搭。',
- '西班牙':'天气不适合户外时，生活会转向餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场和购物中心；晚间社交仍较活跃。素材可表现多人餐桌、咖啡、料理过程、暖色室内、朋友互动和家庭场景。',
- '意大利':'降雨或降温时适合咖啡馆、餐厅、家庭餐桌和室内社交：喝 espresso、做饭/烘焙、家庭聚餐、逛室内商店与文化场馆。素材可用咖啡杯、面包/料理、餐桌、暖光厨房、针织与居家慢生活。',
- '荷兰':'风雨天气下室内活动价值明显：咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店/商店、室内购物。素材可强调窗外雨景与室内暖光反差，搭配热饮、花束、蜡烛、毛毯、针织。',
- '挪威':'低温、风雨天气下室内生活很重要：木屋/家中休息、咖啡与热饮、桑拿、壁炉边聊天、家庭聚会、阅读。素材可突出木屋、壁炉/蜡烛暖光、羊毛针织、马克杯、毛毯、桑拿与窗外冷天气。',
- '瑞典':'进入秋季后室内 cosy 场景非常自然：Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读和家居布置。素材重点可用咖啡+甜点、蜡烛暖光、木质家居、针织、毛毯、窗边阴雨。',
- '芬兰':'转凉后室内活动以桑拿、咖啡、居家烘焙、阅读和家庭时间为主；天气差时室内暖感更明显。素材可表现桑拿、木质空间、咖啡杯、烘焙、暖灯、羊毛袜/针织、窗外秋雨或冷空气。',
- '波兰':'秋季降温后，咖啡馆、家庭餐桌、烘焙、朋友聚会、室内市场/购物等场景自然增加。素材可使用热饮、汤/烘焙、餐桌、暖光家居、针织毛毯、窗边雨景，突出室内温暖感。'
- };
- function addIndoor(){
-   document.querySelectorAll('#details > *').forEach(card=>{
-     const txt=card.textContent||'';
-     const country=Object.keys(indoor).find(x=>txt.includes(x));
-     if(!country)return;
-     let box=card.querySelector('.indoor-action-v51');
-     if(!box){
-       const main=card.querySelector('.culture-main')||card;
-       box=document.createElement('div');
-       box.className='indoor-action-v51';
-       main.appendChild(box);
-     }
-     box.innerHTML='<b>🏠 室内行动：</b>'+indoor[country];
-   });
- }
- setTimeout(addIndoor,1000);
- setTimeout(addIndoor,2200);
 })();
 </script>
 
@@ -1501,23 +1495,6 @@ setTimeout(applyCalendarHolidays,900);
 setTimeout(applyCalendarHolidays,2200);
 </script>
 
-<script id="v5-3-indoor-position">
-(function(){
- function repositionIndoor(){
-   document.querySelectorAll('.indoor-action-v51').forEach(box=>{
-     const parent=box.parentElement;
-     if(!parent)return;
-     const children=[...parent.children];
-     const festival=children.find(x=>x!==box && /节|葡萄|苹果|收获|季|庆典|活动/.test(x.textContent||'') && (x.className||'').toString().match(/event|culture|festival|scene|card/i));
-     if(festival) parent.insertBefore(box,festival);
-   });
- }
- setTimeout(repositionIndoor,1200);
- setTimeout(repositionIndoor,2500);
-})();
-</script>
-
-
 <style id="v5-4-final-fix">
 /* 节日：直接显示在日期格内 */
 .v54-holiday{
@@ -1533,14 +1510,6 @@ setTimeout(applyCalendarHolidays,2200);
 }
 .v54-holiday-cell{background:#fff7f8!important}
 
-/* 室内行动：与当地行动、素材机会同层级 */
-.v54-indoor{
-  margin:8px 0;
-  font-size:inherit;
-  line-height:1.75;
-  color:inherit;
-}
-.v54-indoor b{color:#183b68}
 </style>
 
 <script id="v5-4-final-fix">
@@ -1557,22 +1526,6 @@ const H={
 '波兰':{'01-01':'元旦','01-06':'主显节','04-05':'复活节','04-06':'复活节星期一','05-01':'劳动节','05-03':'宪法日','05-24':'圣灵降临节','06-04':'圣体节','08-15':'圣母升天节','11-01':'诸圣节','11-11':'独立日','12-25':'圣诞节','12-26':'圣诞次日'}
 };
 
-const INDOOR={
-'德国':'降温或阴雨时，咖啡馆、面包店、居家烘焙/做饭、朋友家庭聚会、博物馆与室内购物更自然。',
-'法国':'咖啡馆聊天、面包甜点店、家中晚餐、朋友小聚、博物馆/画廊与室内购物。',
-'西班牙':'餐厅/咖啡馆、家庭厨房、朋友聚餐、室内市场与购物中心，晚间室内社交依然活跃。',
-'意大利':'咖啡馆喝 Espresso、餐厅与家庭餐桌、居家做饭/烘焙、朋友家庭聚会及室内文化场馆。',
-'荷兰':'风雨天气下更偏向咖啡馆、居家喝咖啡、朋友到家聚会、博物馆、花店和室内购物。',
-'挪威':'低温风雨时以木屋/居家休息、热饮、桑拿、壁炉边聊天、家庭聚会和阅读为主。',
-'瑞典':'Fika、咖啡馆、家中烘焙肉桂卷、点蜡烛、朋友小聚、阅读与家居生活更典型。',
-'芬兰':'桑拿、咖啡、居家烘焙、阅读、家庭时间和暖感木质空间，是转凉后的典型室内生活。',
-'波兰':'咖啡馆、家庭餐桌、热饮/烘焙、朋友聚会、室内市场和购物场景随秋季降温增加。'
-};
-
-function countryOf(el){
- const t=el.textContent||'';
- return Object.keys(H).find(c=>t.includes(c));
-}
 function monthOf(el){
  const m=(el.textContent||'').match(/2026年\s*(\d{1,2})月/);
  return m?+m[1]:9;
@@ -1613,26 +1566,7 @@ function renderHolidays(){
  });
 }
 
-/* 室内行动：精确插到“当地行动”之后、“素材机会”之前 */
-function renderIndoor(){
- Object.keys(INDOOR).forEach(country=>{
-   const nodes=[...document.querySelectorAll('div,p')].filter(el=>{
-      const t=(el.textContent||'').trim();
-      return (t.startsWith('当地行动：')||t.startsWith('🌳 室外行动：')) && t.length<260 &&
-             (el.closest('section,article,div')?.textContent||'').includes(country);
-   });
-   if(!nodes.length)return;
-   const action=nodes[0];
-   const parent=action.parentElement;
-   if(!parent || parent.querySelector('.v54-indoor'))return;
-   const row=document.createElement(action.tagName.toLowerCase()==='p'?'p':'div');
-   row.className='v54-indoor';
-   row.innerHTML='<b>🏠 室内行动：</b>'+INDOOR[country];
-   action.insertAdjacentElement('afterend',row);
- });
-}
-
-function run(){renderHolidays();renderIndoor();}
+function run(){renderHolidays();}
 setTimeout(run,400);
 setTimeout(run,1200);
 setTimeout(run,2600);
@@ -1716,7 +1650,7 @@ FI:['芬兰综合新闻与本国事件','personoitu lahja','雕刻礼品、户�
 PL:['波兰综合新闻与本国事件','prezent personalizowany','相册、抱枕、家庭礼品','定制细节与礼物包装']};
 const href=(u,t)=>`<a class="v605-link" target="_blank" rel="noopener noreferrer" href="${safe(u)}">${safe(t)} ↗</a>`;
 const overview=document.createElement('div');overview.id='v6-overview';
-overview.innerHTML='<div class="v605-heading"><div><div class="v605-kicker">MARKET INTELLIGENCE · NINE COUNTRIES</div><h3>🌍 9国市场情报速览</h3><p>每个国家直接展示四项内容提要。先看信息，再点击来源深入了解；新闻与热搜每日自动更新；新闻覆盖本国政治、经济、社会、文化及重大事件，本国热点候选优先，搜索趋势为综合热搜，竞品和广告不代表销量或投放成绩。</p></div><span class="v605-state">结构预览 · 数据待接入</span></div><div class="v6-overview-header"><span>国家</span><span>📰 每日新闻</span><span>📈 搜索趋势</span><span>🛍️ 竞品商品</span><span>🎬 Facebook 广告</span></div>';
+overview.innerHTML='<div class="v605-heading"><div><div class="v605-kicker">MARKET INTELLIGENCE · NINE COUNTRIES</div><h3>🌍 9国市场情报速览</h3><p>按国家查看综合新闻、礼品行业线索、当地热搜、Callie 关键词、竞品商品和 Facebook 广告。各栏目显示本次快照的记录数。</p></div><span class="v605-state">结构预览 · 数据待接入</span></div><div class="v6-overview-header"><span>国家</span><span>📰 每日新闻</span><span>📈 搜索趋势</span><span>🛍️ 竞品商品</span><span>🎬 Facebook 广告</span></div>';
 for(const c of countries){
  const [code,flag,name,lang,geo]=c,shops=comp[code]||[],f=marketFocus[code];
  const news=`https://news.google.com/search?q=${encodeURIComponent(name)}&hl=${lang}&gl=${geo}&ceid=${geo}:${lang}`;
@@ -1735,10 +1669,10 @@ for(const c of countries){
  PL:[['首饰','biżuteria personalizowana'],['围巾','szalik personalizowany'],['小夜灯','lampka nocna personalizowana']]
  };
  const keywordHTML=(keywordFallback[code]||[]).map(([category,keyword])=>'<div class="v6-category-chip"><strong>'+safe(category+' · '+keyword)+'</strong><small>Callie商品方向 · 待核实趋势指数</small><a target="_blank" rel="noopener noreferrer" href="https://trends.google.com/trends/explore?geo='+encodeURIComponent(geo)+'&q='+encodeURIComponent(keyword)+'">查看趋势 ↗</a></div>').join('');
- overview.insertAdjacentHTML('beforeend',`<article class="v6-overview-row v605-row">
- <div class="v6-market-name"><b><img class="v6-country-flag" src="https://flagcdn.com/${code.toLowerCase()}.svg" alt="${safe(name)}国旗" width="22" height="17" loading="eager" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="v6-flag-fallback" style="display:none">${flag}</span>> ${name}</b><small>${code} · ${safe(({DE:"Deutschland",FR:"France",ES:"España",IT:"Italia",NL:"Nederland",NO:"Norge",SE:"Sverige",FI:"Suomi",PL:"Polska"})[code])}</small></div>
+ overview.insertAdjacentHTML('beforeend',`<article class="v6-overview-row v605-row" data-market-country="${code}">
+ <div class="v6-market-name"><b><img class="v6-country-flag" src="https://flagcdn.com/${code.toLowerCase()}.svg" alt="${safe(name)}国旗" width="22" height="17" loading="eager" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="v6-flag-fallback" style="display:none">${flag}</span> ${name}</b><small>${code} · ${safe(({DE:"Deutschland",FR:"France",ES:"España",IT:"Italia",NL:"Nederland",NO:"Norge",SE:"Sverige",FI:"Suomi",PL:"Polska"})[code])}</small></div>
  <div class="v6-market-cell"><em>📰 新闻</em><div class="v605-mini">本国综合新闻（非礼品专题）</div><strong>${safe(f[0])}</strong><p>关注本国政治、经济、社会、文化、天气及重大突发事件。真实标题、时间与中文翻译由每日采集提供。</p>${href(news,'阅读新闻')}</div>
- <div class="v6-market-cell"><em>📈 趋势</em><div class="v605-mini">本地语言关键词</div><div class="v6-category-keyword-list">${keywordHTML}</div></div>
+ <div class="v6-market-cell"><em>📈 趋势</em><div class="v605-mini">本地语言关键词</div><div class="v6-category-keyword-list">${keywordHTML}</div>${href(trend,"打开个性化礼品趋势")}${href("https://trends.google.com/trending?geo="+geo,"打开当地热搜")}</div>
  <div class="v6-market-cell"><em>🛍️ 竞品</em><div class="v605-mini">重点观察品类</div><strong>${safe(f[2])}</strong><p>候选来源：${safe(shops.map(x=>x[0]).join('、')||'待补充')}。榜单与价格待核验。</p>${shop?href(shop[1],'查看商品'):''}</div>
  <div class="v6-market-cell"><em>🎬 广告</em><div class="v605-mini">Meta 广告研究 · 竞品检索</div><p>公开广告资料库入口；素材及互动尚未采集。</p><div class="v6-ad-static">${shops.slice(0,3).map(([brand])=>'<div class="v6-live-item"><strong>'+safe(brand)+'</strong><a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/ads/library/?active_status=all&amp;ad_type=all&amp;country='+encodeURIComponent(geo)+'&amp;q='+encodeURIComponent(brand)+'&amp;search_type=keyword_unordered">查看公开广告 ↗</a></div>').join('')}</div></div>
  </article>`);
@@ -1748,6 +1682,9 @@ for(const k of ['news','trends','competitors','meta'])document.getElementById('v
 document.getElementById('v6-panel-opportunity').innerHTML=`<h3 class="v605-section-title">💡 重点商品机会观察 <small>需真实数据验证</small></h3><div class="v605-cards"><article><span>01 · 德国 / 法国</span><strong>名字与纪念定制首饰</strong><p>验证刻字、名字和生辰花等定制需求，对照当地搜索趋势和竞品公开榜单。</p><em>待验证机会</em></article><article><span>02 · 法国 / 西班牙 / 荷兰</span><strong>照片与家庭情感礼品</strong><p>研究照片定制、相册和家居礼品，重点观察送礼情绪与真实使用场景。</p><em>待验证机会</em></article><article><span>03 · 北欧 / 波兰</span><strong>实用型个性化礼物</strong><p>关注木制、户外和居家用品，区分文化契合度与真实热卖证据。</p><em>待验证机会</em></article></div>`;
 document.getElementById('v6-panel-visual').innerHTML=`<h3 class="v605-section-title">🎨 视觉策略与测试建议 <small>设计方向示例</small></h3><div class="v605-cards"><article><span>品类设计</span><strong>商品图结构</strong><p>首图交代商品和定制项；后续补充工艺、材质、佩戴或使用场景，不只关注首图。</p></article><article><span>营销设计</span><strong>广告图表达</strong><p>突出单一核心卖点，结合当地节日及生活场景，减少画面信息堆叠。</p></article><article><span>视频设计</span><strong>15秒素材框架</strong><p>第1秒停滑、第2秒看懂、第3秒促点击；后续展示定制、使用及情感价值。</p></article></div>`;
 })();</script><style id="v6-live-style">
+#v6-intel .v6-market-group{border-top:1px solid #e1e9f4;padding-top:8px;margin-top:6px}
+#v6-intel .v6-market-cell h4,#v6-intel .v6-market-cell summary{font-size:12px;color:#193a63;margin:4px 0}
+#v6-intel .v6-market-cell summary{cursor:pointer}
 #v6-intel .v6-live-summary{display:block;font-size:12px;line-height:1.55;margin:4px 0 8px;color:#61768c}
 #v6-intel .v6-live-item{display:block;margin:6px 0 8px;padding-bottom:8px;border-bottom:1px dashed #e3eaf3}
 #v6-intel .v6-live-item:last-child{border-bottom:0}
@@ -1757,38 +1694,98 @@ document.getElementById('v6-panel-visual').innerHTML=`<h3 class="v605-section-ti
 #v6-intel .v6-data-notice{padding:10px 13px;border-radius:10px;background:#edf5fc;color:#3b6589;font-size:12px;margin:10px 0}
 #v6-intel .v6-translation{font-size:11px;line-height:1.6;color:#687e96;margin:1px 0 3px;overflow-wrap:anywhere}
 </style>
-<script id="v6-live-loader">(function(){
-const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+<script id="v6-live-loader">
+const marketSnapshot=(async ()=>{
+ const valid=data=>data?.countries&&Number.isFinite(Date.parse(data.updated_at));
+ const hasNews=data=>Object.values(data.countries).some(country=>Array.isArray(country?.news)&&country.news.length);
+ let primary;
+ if(location.protocol!=='file:'){
+  try{
+   const response=await fetch('./data/market.json',{cache:'no-store',signal:AbortSignal.timeout(6000)});
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const data=await response.json();
+   if(!valid(data))throw Error('Invalid market snapshot');
+   if(hasNews(data))return {data,backup:false};
+   primary=data;
+  }catch(error){console.warn('Market JSON unavailable:',error.message)}
+ }
+ try{
+  const backup=await new Promise((resolve,reject)=>{
+   const script=document.createElement('script');
+   const timer=setTimeout(()=>{script.remove();reject(Error('Market backup timed out'))},6000);
+   script.onload=()=>{clearTimeout(timer);script.remove();resolve(window.marketSnapshotBackup)};
+   script.onerror=()=>{clearTimeout(timer);script.remove();reject(Error('Market backup unavailable'))};
+   script.src='./data/market_snapshot.js';
+   document.head.appendChild(script);
+  });
+  if(valid(backup)&&(!primary||hasNews(backup)))return {data:backup,backup:true};
+ }catch(error){console.warn(error.message)}
+ if(primary)return {data:primary,backup:false};
+ throw Error('No market snapshot available');
+})();
+(function(){
 const safeURL=x=>{try{const u=new URL(x,location.href);return ['https:','http:'].includes(u.protocol)?u.href:'#'}catch(e){return '#'}};
 const fmt=x=>x?new Date(x).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'时间未知';
 const root=document.getElementById('v6-overview');if(!root)return;
 const rows=[...root.querySelectorAll('.v6-overview-row')];
 const status=root.querySelector('.v605-state');
-const show=(cell,kind,items,stamp)=>{
- const label=cell.querySelector('.v605-mini');if(label)label.textContent=kind;
+const show=(cell,kind,items,group)=>{
+ const entries=items||[];
+ const label=cell.querySelector('.v605-mini');if(label)label.textContent=kind+' · '+entries.length+' 条';
  const strong=cell.querySelector('strong');if(strong)strong.remove();
  const p=cell.querySelector('p');if(p)p.remove();
- const entries=(items||[]).slice(0,kind==='竞品公开商品线索'?8:3);
- if(!entries.length){cell.insertAdjacentHTML('beforeend','<p class="v6-live-summary">该来源暂未返回可验证的数据，保留来源入口。</p>');return}
+
+ if(!entries.length){cell.insertAdjacentHTML('beforeend','<p class="v6-live-summary">该来源本轮暂无可展示数据。</p>');return}
  const frag=document.createElement('div');
- for(const x of entries){const item=document.createElement('div');item.className='v6-live-item';
+ for(const x of entries){const item=document.createElement('div');item.className='v6-live-item';item.dataset.marketEntry=group;
   const heading=document.createElement('strong');heading.textContent=x.title||x.name||'未命名';item.appendChild(heading);if(x.image&&kind==='竞品公开商品线索'){try{const imgUrl=new URL(x.image);if(imgUrl.protocol==='https:'){const pic=document.createElement('img');pic.src=imgUrl.href;pic.alt=x.title||'竞品商品';pic.loading='lazy';pic.style.cssText='max-width:100%;max-height:120px;object-fit:contain;display:block;margin:5px 0';pic.onerror=()=>{pic.remove();const unavailable=document.createElement('small');unavailable.textContent='商品图片暂不可访问 · 可查看官网原图';item.appendChild(unavailable)};item.appendChild(pic)}}catch(e){}}if(x.price){const price=document.createElement('div');price.className='v6-translation';price.textContent='公开标价：'+x.price+' '+(x.currency||'');item.appendChild(price)}
   if(x.title_zh){const translation=document.createElement('div');translation.className='v6-translation';translation.textContent=x.title_zh;item.appendChild(translation)}
-  const meta=document.createElement('small');meta.textContent=[x.scope||'',x.source,x.published?fmt(x.published):'',x.signal||''].filter(Boolean).join(' · ');item.appendChild(meta);
+  else if(group!=='products'){const status=document.createElement('small');status.className='v6-translation-pending';status.textContent='中文译文暂缺';item.appendChild(status)}
+  const meta=document.createElement('small');meta.textContent=[x.scope||'',x.source,x.published?fmt(x.published):'',x.signal||'',x.selection_basis||''].filter(Boolean).join(' · ');item.appendChild(meta);
   if(x.summary){const summary=document.createElement('div');summary.className='v6-live-summary';summary.textContent=x.summary;item.appendChild(summary)}
   if(x.url&&safeURL(x.url)!=='#'){const a=document.createElement('a');a.href=safeURL(x.url);a.target='_blank';a.rel='noopener noreferrer';a.textContent='查看详情 ↗';item.appendChild(a)}
   frag.appendChild(item)
  }
  cell.appendChild(frag)
 };
-fetch('./data/market.json?ts='+Math.floor(Date.now()/1800000),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{
- if(!data.updated_at)throw Error('missing timestamp');
+function addMarketGroup(cell,title,items,group){
+ const block=document.createElement('div');
+ block.className='v6-market-group';
+ const heading=document.createElement('h4');
+ heading.textContent=title+' · '+(items||[]).length+' 条';
+ show(block,title,items,group);
+ block.prepend(heading);
+ cell.appendChild(block);
+}
+marketSnapshot.then(({data,backup})=>{
  const age=(Date.now()-Date.parse(data.updated_at))/3600000;
- status.textContent=(age>36?'⚠ 数据较旧 · ':'● 情报已同步 · ')+fmt(data.updated_at)+'（北京时间）';
- rows.forEach((row,i)=>{const key=['DE','FR','ES','IT','NL','NO','SE','FI','PL'][i];const v=data.countries?.[key]||{};const cells=row.querySelectorAll('.v6-market-cell');
- show(cells[0],'本国热点优先 · 当地媒体补充',v.news,data.updated_at);
- if((v.category_signals||[]).length){const cell=cells[1];const label=cell.querySelector('.v605-mini');if(label)label.textContent='Callie商品方向 · 当地关键词（非热度排名）';const old=cell.querySelector('strong');if(old)old.remove();const oldP=cell.querySelector('p');if(oldP)oldP.remove();const prior=cell.querySelector('.v6-category-keyword-list');if(prior)prior.remove();const wrap=document.createElement('div');wrap.className='v6-category-keyword-list';for(const s of v.category_signals.slice(0,10)){const el=document.createElement('div');el.className='v6-category-chip';const title=document.createElement('strong');title.textContent=s.category+' · '+s.keyword;el.appendChild(title);const note=document.createElement('small');note.textContent='Callie商品方向候选 · 未获取搜索指数';el.appendChild(note);if(s.url&&safeURL(s.url)!=='#'){const link=document.createElement('a');link.href=safeURL(s.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='查看当地趋势 ↗';el.appendChild(link)}wrap.appendChild(el)}cell.appendChild(wrap)}else{const label=cells[1].querySelector('.v605-mini');if(label)label.textContent='Callie商品关键词 · 查看当地趋势';}
- show(cells[2],'竞品公开商品线索',(v.products||[]).filter(x=>x.verified_public_product&&x.image).length?(v.products||[]).filter(x=>x.verified_public_product&&x.image):v.products,data.updated_at);
+ const codes=['DE','FR','ES','IT','NL','NO','SE','FI','PL'];
+ const incomplete=codes.filter(code=>{
+  const v=data.countries[code]||{};
+  return (v.news||[]).length<3||(v.news||[]).some(x=>!x.title_zh)||(v.trending||[]).length<3||!(v.products||[]).length;
+ });
+ const notices=[backup?'备用快照':'',age>36?'数据较旧':'',incomplete.length?`新闻、译文、热搜或竞品部分缺失（${incomplete.length} 国）`:''].filter(Boolean);
+ status.textContent=(notices.length?'⚠ '+notices.join(' · ')+' · ':'● 情报快照 · ')+fmt(data.updated_at)+'（北京时间）';
+ rows.forEach(row=>{const key=row.dataset.marketCountry;const v=data.countries[key]||{};const cells=row.querySelectorAll('.v6-market-cell');
+ show(cells[0],'本国综合新闻',v.news,'news');
+ addMarketGroup(cells[0],'个性化礼品行业新闻',v.gift_signals,'gift');
+ if((v.category_signals||[]).length){const cell=cells[1];const label=cell.querySelector('.v605-mini');if(label)label.textContent='Callie 当地候选关键词 · '+v.category_signals.length+' 项';const old=cell.querySelector('strong');if(old)old.remove();const oldP=cell.querySelector('p');if(oldP)oldP.remove();const prior=cell.querySelector('.v6-category-keyword-list');if(prior)prior.remove();const wrap=document.createElement('div');wrap.className='v6-category-keyword-list';for(const s of v.category_signals){const el=document.createElement('div');el.className='v6-category-chip';const title=document.createElement('strong');title.textContent=s.category+' · '+s.keyword;el.appendChild(title);const note=document.createElement('small');note.textContent='Callie商品方向候选 · 未获取搜索指数';el.appendChild(note);if(s.url&&safeURL(s.url)!=='#'){const link=document.createElement('a');link.href=safeURL(s.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='查看当地趋势 ↗';el.appendChild(link)}wrap.appendChild(el)}cell.appendChild(wrap)}else{const label=cells[1].querySelector('.v605-mini');if(label)label.textContent='Callie商品关键词 · 查看当地趋势';}
+ addMarketGroup(cells[1],'当地综合热搜',v.trending,'trending');
+ show(cells[2],'竞品公开商品线索',v.products,'products');
+ if(v.product_source_audit?.length){
+  const details=document.createElement('details'),summary=document.createElement('summary');
+  summary.textContent='竞品采集来源 · '+v.product_source_audit.length+' 项';
+  details.appendChild(summary);
+  for(const source of v.product_source_audit){
+   const line=document.createElement('div');
+   const url=safeURL(source.url);
+   const label=document.createElement(url==='#'?'span':'a');
+   label.textContent=source.brand+' · 发现 '+source.verified_count+' 条';
+   if(url!=='#'){label.href=url;label.target='_blank';label.rel='noopener noreferrer'}
+   line.appendChild(label);details.appendChild(line);
+  }
+  cells[2].appendChild(details);
+ }
  const adCell=cells[3];
  const ads=(v.ads||[]).filter(x=>x.record_type==='verified_ad'&&x.url&&safeURL(x.url)!=='#');
  const label=adCell.querySelector('.v605-mini');if(label)label.textContent=ads.length?'Meta 广告 · 已核实记录与公开查询':'Meta 广告 · 公开查询';
@@ -1798,9 +1795,11 @@ fetch('./data/market.json?ts='+Math.floor(Date.now()/1800000),{cache:'no-store'}
  const note=document.createElement('p');note.className='v6-live-summary';
  note.textContent=ads.length?'已取得 '+ads.length+' 条官方广告记录；媒体无法直接获取时可打开原始广告快照。下方同时保留品类和品牌查询入口。':'暂未取得可核实的广告素材；保留各品类及品牌的 Meta 广告资料库入口，不使用商品图片冒充广告。';
  adCell.appendChild(note);
- for(const ad of ads.slice(0,6)){
+ if(!ads.length&&v.ad_data_status){const reason=document.createElement('small');reason.textContent=v.ad_data_status;adCell.appendChild(reason)}
+ for(const ad of ads){
   const item=document.createElement('div');item.className='v6-live-item';
-  const title=document.createElement('strong');title.textContent='已核实广告 · '+(ad.brand||ad.title||'Meta 广告');item.appendChild(title);
+  const title=document.createElement('strong');title.textContent='已核实广告 · '+(ad.title||ad.brand||'Meta 广告');item.appendChild(title);
+  if(ad.description){const body=document.createElement('p');body.textContent=ad.description;item.appendChild(body)}
   if(ad.image&&safeURL(ad.image)!=='#'){
    const img=document.createElement('img');img.src=safeURL(ad.image);img.alt='公开广告素材';img.loading='lazy';img.style.cssText='max-width:100%;max-height:170px;object-fit:contain;display:block;margin:6px 0';img.onerror=()=>img.remove();item.appendChild(img)
   }
@@ -1811,9 +1810,12 @@ fetch('./data/market.json?ts='+Math.floor(Date.now()/1800000),{cache:'no-store'}
   const link=document.createElement('a');link.href=safeURL(ad.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='查看原始广告 ↗';item.appendChild(link);adCell.appendChild(item)
  }
  const brands=(v.ad_searches||[]).length?v.ad_searches:({DE:['GRAVURZEILE','CARDORI'],FR:['Cadeaux.com','YourSurprise'],ES:['Wanapix','Hofmann'],IT:['Troppotogo'],NL:['YourSurprise'],NO:['Walseng Design','PersonligGave'],SE:['Smartphoto'],FI:['Puuki','GetPersonal'],PL:['Crazyshop']}[key]||[]).map(brand=>({brand,url:'https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country='+key+'&q='+encodeURIComponent(brand)+'&search_type=keyword_unordered'}));
- for(const b of [...brands.filter(x=>x.category==='Callie同类商品'),...brands.filter(x=>x.category!=='Callie同类商品')].slice(0,6)){
+ const uniqueBrands=[...new Map(brands.filter(b=>b.url&&safeURL(b.url)!=='#').map(b=>[b.url,b])).values()];
+ const queryHeading=document.createElement('h4');queryHeading.textContent='公开广告查询 · '+uniqueBrands.length+' 项';adCell.appendChild(queryHeading);
+ for(const b of [...uniqueBrands.filter(x=>x.category==='Callie同类商品'),...uniqueBrands.filter(x=>x.category!=='Callie同类商品')]){
   const line=document.createElement('div');line.className='v6-live-item';const title=document.createElement('strong');
   title.textContent=(b.category==='Callie同类商品'?'品类 · ':'竞品 · ')+b.brand+' · 公开广告查询';line.appendChild(title);
+  if(b.keyword){const keyword=document.createElement('small');keyword.textContent=b.keyword;line.appendChild(keyword)}
   if(b.url&&safeURL(b.url)!=='#'){const link=document.createElement('a');link.href=safeURL(b.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent='打开广告资料库 ↗';line.appendChild(link)}adCell.appendChild(line)
  }
  const info=document.createElement('small');info.textContent='仅展示已核实广告及公开查询链接；没有可验证的数据不显示效果数字。';adCell.appendChild(info);
@@ -1841,10 +1843,10 @@ const desc=document.createElement('p');desc.className='v6-gift-sub';desc.textCon
 const grid=document.createElement('div');grid.className='v6-gift-grid';
 wrap.append(heading,desc,grid);anchor.parentNode.insertBefore(wrap,anchor);
 function el(tag,txt){const e=document.createElement(tag);e.textContent=txt||'';return e}
-fetch('./data/market.json?gift='+Math.floor(Date.now()/1800000),{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data unavailable');return r.json()}).then(data=>{
+marketSnapshot.then(({data})=>{
 for(const [code,name] of codes){
 const card=el('article');card.className='v6-gift-card';card.appendChild(el('h4',name+' · 行业线索'));
-const c=data.countries?.[code]||{},items=(c.gift_signals||[]).slice(0,3);
+const c=data.countries?.[code]||{},items=c.gift_signals||[];
 if(!items.length)card.appendChild(el('p','暂未获取到可验证的行业新闻，不代表没有市场需求。'));
 for(const item of items){
 const line=el('div');line.className='v6-gift-item';
@@ -2041,21 +2043,19 @@ update();
 /* Display verified Chinese titles even when the published JSON lags behind the repo. */
 (function(){
 const embedded={"DE|Proteste von Gen Z regelt: Festnahmen nach Ausschreitungen im Anschluss an friedliche Proteste - DIE ZEIT":"“Z世代掌权”抗议活动：和平示威后发生骚乱，多人被捕","DE|\"Gen-Z-regelt\"-Demo: Ausschreitungen in Hamburg - NDR.de":"“Z世代掌权”示威：汉堡发生骚乱","DE|Schülerproteste in Berlin: Radikale Gruppen übernehmen, Lage eskaliert - Euronews.com":"柏林学生抗议：激进团体介入，局势升级","FR|Paris, Marseille : soirée sous haute tension - 31/10 - BFM":"巴黎、马赛：局势紧张的夜晚（10月31日）","FR|Nouvelle-Zélande – France – 31 octobre 2026 - - Fédération Française de Rugby - FFR":"新西兰对阵法国：2026年10月31日橄榄球比赛","FR|\"On va continuer à être dans la rue\" : à Marseille, un cortège non déclaré rassemble environ 10 000 personnes lors de la mobilisation du 31 octobre - franceinfo":"马赛10月31日动员活动：约1万人参加未经申报的游行，参与者称将继续上街","ES|Gran recibimiento al Real Madrid en Santander - Real Madrid CF | Web Oficial":"皇家马德里抵达桑坦德，受到热烈欢迎","ES|FC Barcelona 6-1 Deportivo Alavés: resumen, resultado y goles del partido de la jornada 11 de LaLiga - Cadena SER":"巴塞罗那6比1阿拉维斯：西甲第11轮比赛回顾、赛果与进球","ES|El Barça recupera su mejor versión con una goleada ante el Alavés para seguir al frente de la Liga - RTVE.es":"巴萨大胜阿拉维斯，找回最佳状态并继续领跑联赛","IT|Udinese-Roma 2-5, la sintesi della partita - RaiNews":"乌迪内斯2比5罗马：比赛集锦","IT|Sciopero generale 20 novembre 2026 - CGIL Milano":"2026年11月20日全国总罢工——米兰总工会","IT|Le parole di Gasperini dopo Udinese-Roma - AS Roma":"加斯佩里尼在乌迪内斯对阵罗马赛后的发言","NL|Vooral minderjarigen aangehouden in Den Haag, grote incidenten uitgebleven - NOS":"海牙被捕人员主要为未成年人，未发生重大事件","NL|Tientallen aanhoudingen verricht bij onrust in Den Haag, merendeel minderjarig - NU":"海牙骚乱中数十人被捕，多数为未成年人","NL|ADO-fan probeert stad te beschermen tegen relschoppers: ‘Den Haag is geen Parijs!’ - De Telegraaf":"ADO球迷试图保护城市免遭骚乱者破坏：‘海牙不是巴黎！’","NO|Bergen: To menn til legevakt etter fallulykke – Siste nytt - NRK":"卑尔根：两名男子坠落事故后被送往急诊","NO|Person omkom på treningssenter i Oslo: - Undersøker mulig teknisk feil - Dagbladet":"奥斯陆健身中心有人死亡：警方调查可能的技术故障","NO|Mann døde på treningssenter i Oslo – politiet undersøker - Aftenposten":"一名男子在奥斯陆健身中心死亡，警方正在调查","SE|Ishockey: Euro hockey tour, damer – Sverige-Finland - SVT Play":"女子冰球欧洲巡回赛：瑞典对芬兰","SE|Ishockey: Malmö – HV71 0 – 0 – Senaste nytt från SHL - SVT Nyheter":"冰球：马尔默对阵HV71，比分0比0——瑞典冰球联赛最新消息","SE|Bedrägerivåg mot äldre kvinnor i Stockholm - Svenska Dagbladet":"斯德哥尔摩出现针对老年女性的诈骗浪潮","FI|Kolumni | Suomi ei onnistunut päihittämään möhköfanttia ajoissa - HS.fi":"专栏：芬兰未能及时战胜‘庞然大物’","FI|Hahmo paljastui kesken Masked Singer Suomi -lähetyksen: ”Olen pahoillani” - Iltalehti":"《芬兰蒙面歌王》直播中一名角色身份揭晓：‘我很抱歉’","FI|SDP:n Räsänen: Ei kai hallitus pyri johtamaan komissiota harhaan? - Sosialidemokraatit":"社民党拉萨宁质疑：政府难道试图误导欧盟委员会？","PL|[SKRÓT] Lech Poznań 3:1 Wisła Kraków: „Piątka” Kolejorza - Ekstraklasa":"比赛集锦：波兹南莱赫3比1克拉科夫维斯瓦，莱赫队攻入三球","PL|Lech Poznań – Wisła Kraków. Hit PKO BP Ekstraklasy w TVP! - sport.tvp.pl":"波兹南莱赫对阵克拉科夫维斯瓦：波兰顶级联赛焦点战将在TVP播出","PL|Skład Lecha Poznań na mecz z Wisłą Kraków - Lech Poznań":"波兹南莱赫对阵克拉科夫维斯瓦的比赛阵容"};
-const dictionary=Object.create(null);
-for(const [key,value] of Object.entries(embedded)){const p=key.indexOf('|');if(p>0&&value)dictionary[key.slice(p+1).trim()]=value}
 const rowCountries=['DE','FR','ES','IT','NL','NO','SE','FI','PL'];
 function repair(){
  const rows=document.querySelectorAll('#v6-overview .v6-overview-row');
  rows.forEach((row,i)=>{
  const first=row.querySelector('.v6-market-cell');if(!first)return;
- const items=first.querySelectorAll('.v6-live-item');
- const names=Object.keys(embedded).filter(k=>k.startsWith(rowCountries[i]+'|'));
- items.forEach((item,j)=>{
+ const items=first.querySelectorAll('[data-market-entry="news"]');
+ items.forEach(item=>{
   const heading=item.querySelector('strong');if(!heading)return;
-  const translation=dictionary[heading.textContent.trim()]|| (names[j]?embedded[names[j]]:null);
+  const translation=embedded[rowCountries[i]+'|'+heading.textContent.trim()];
   if(!translation||item.querySelector('.v6-translation'))return;
   const node=document.createElement('div');node.className='v6-translation';node.textContent=translation;
   node.style.cssText='color:#496b92;font-size:12px;line-height:1.65;margin:5px 0 7px;';
+  item.querySelector('.v6-translation-pending')?.remove();
   heading.insertAdjacentElement('afterend',node);
  });
  });
